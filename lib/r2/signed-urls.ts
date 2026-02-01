@@ -1,4 +1,4 @@
-import { r2Client, BUCKET_NAME } from './client';
+import { r2Client, getBucketName } from './client';
 import { GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
@@ -12,7 +12,7 @@ export async function getSignedDownloadUrl(
 ): Promise<string> {
   try {
     const command = new GetObjectCommand({
-      Bucket: BUCKET_NAME,
+      Bucket: getBucketName(),
       Key: key,
     });
 
@@ -35,7 +35,7 @@ export async function getSignedUploadUrl(
 ): Promise<string> {
   try {
     const command = new PutObjectCommand({
-      Bucket: BUCKET_NAME,
+      Bucket: getBucketName(),
       Key: key,
       ContentType: contentType,
     });

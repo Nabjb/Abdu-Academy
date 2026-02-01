@@ -1,4 +1,4 @@
-import { r2Client, BUCKET_NAME, R2_FOLDERS } from './client';
+import { r2Client, getBucketName, R2_FOLDERS } from './client';
 import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -24,7 +24,7 @@ export async function uploadFile(
 
   try {
     const command = new PutObjectCommand({
-      Bucket: BUCKET_NAME,
+      Bucket: getBucketName(),
       Key: key,
       Body: file,
       ContentType: contentType || 'application/octet-stream',
@@ -79,7 +79,7 @@ export async function uploadFileFromStream(
 export async function deleteFile(key: string): Promise<void> {
   try {
     const command = new DeleteObjectCommand({
-      Bucket: BUCKET_NAME,
+      Bucket: getBucketName(),
       Key: key,
     });
 
