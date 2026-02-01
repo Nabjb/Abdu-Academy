@@ -1,0 +1,1875 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": "1",
+        "title": "Project Setup and Configuration",
+        "description": "Initialize Next.js 16 project with App Router and configure development environment",
+        "details": "Create new Next.js 16 project using 'npx create-next-app@latest' with App Router enabled. Configure TypeScript, ESLint, Tailwind CSS. Set up folder structure following App Router conventions: app/, components/, lib/, types/. Install required dependencies: @appwrite.io/node, stripe, @aws-sdk/client-s3, shadcn/ui components. Configure environment variables structure and create .env.example file.",
+        "testStrategy": "Verify project builds successfully, all dependencies install correctly, and development server starts without errors. Test environment variable loading.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Initialize Next.js 16 Project with App Router",
+            "description": "Create new Next.js 16 project using create-next-app with App Router enabled and TypeScript configuration",
+            "dependencies": [],
+            "details": "Run 'npx create-next-app@latest' command with App Router, TypeScript, ESLint, and Tailwind CSS options enabled. Verify project structure is created correctly with app/ directory and configuration files.",
+            "status": "done",
+            "testStrategy": "Verify project builds successfully with 'npm run build' and development server starts without errors using 'npm run dev'",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:01:19.650Z"
+          },
+          {
+            "id": 2,
+            "title": "Set up Folder Structure and Project Organization",
+            "description": "Create organized folder structure following App Router conventions and best practices",
+            "dependencies": [
+              1
+            ],
+            "details": "Create folders: app/ (for routes), components/ (reusable UI components), lib/ (utilities and configurations), types/ (TypeScript type definitions). Set up proper index files and organize components into logical subdirectories.",
+            "status": "done",
+            "testStrategy": "Verify all folders are created correctly and can import/export modules between directories without path issues",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:01:21.615Z"
+          },
+          {
+            "id": 3,
+            "title": "Install and Configure Required Dependencies",
+            "description": "Install all necessary packages including Appwrite, Stripe, AWS SDK, and shadcn/ui components",
+            "dependencies": [
+              2
+            ],
+            "details": "Install dependencies: @appwrite.io/node for backend integration, stripe for payments, @aws-sdk/client-s3 for R2 storage, shadcn/ui components for UI. Configure package.json scripts and verify compatibility.",
+            "status": "done",
+            "testStrategy": "Run 'npm install' successfully, verify no dependency conflicts, and test that all packages can be imported without errors",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:01:23.483Z"
+          },
+          {
+            "id": 4,
+            "title": "Configure Development Tools and Code Quality",
+            "description": "Set up ESLint, Prettier, and TypeScript configurations for consistent code quality",
+            "dependencies": [
+              3
+            ],
+            "details": "Configure ESLint rules for Next.js and TypeScript, set up Prettier for code formatting, configure TypeScript strict mode settings. Add pre-commit hooks for code quality enforcement.",
+            "status": "done",
+            "testStrategy": "Run ESLint and Prettier on sample code, verify TypeScript compilation works correctly, and test that code quality tools catch common issues",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:01:25.498Z"
+          },
+          {
+            "id": 5,
+            "title": "Set up Environment Variables and Configuration",
+            "description": "Create environment variable structure and configuration files for different environments",
+            "dependencies": [
+              4
+            ],
+            "details": "Create .env.example file with all required environment variables (Appwrite, Stripe, R2 credentials). Set up environment variable validation and loading. Create separate configurations for development, staging, and production.",
+            "status": "done",
+            "testStrategy": "Verify environment variables load correctly in development, test that missing variables are properly detected, and validate configuration works across different environments",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:01:27.491Z"
+          }
+        ],
+        "updatedAt": "2026-02-01T16:01:27.491Z"
+      },
+      {
+        "id": "2",
+        "title": "Appwrite Configuration and Database Schema",
+        "description": "Set up Appwrite backend services and create all required database collections",
+        "details": "Initialize Appwrite project and configure authentication settings. Create collections: Users (userId, name, avatar, role, createdAt, updatedAt), Courses (courseId, title, slug, description, price, thumbnail, category, level, instructorId, status, totalDuration, totalLessons, publishedAt), Modules (moduleId, courseId, title, description, order), Lessons (lessonId, moduleId, courseId, title, description, videoUrl, duration, order, isFreePreview, resources), Purchases (purchaseId, userId, courseId, stripePaymentId, amount, status, purchasedAt), Progress (progressId, userId, courseId, lessonId, completed, watchedSeconds), Reviews (reviewId, userId, courseId, rating, comment), Categories (categoryId, name, slug, description, icon, order). Set up proper indexes and permissions.",
+        "testStrategy": "Verify all collections are created with correct attributes and indexes. Test CRUD operations on each collection. Validate permissions are properly configured.",
+        "priority": "high",
+        "dependencies": [
+          "1"
+        ],
+        "status": "in-progress",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Initialize Appwrite Project and Authentication Setup",
+            "description": "Set up new Appwrite project and configure authentication settings with email/password and OAuth providers",
+            "dependencies": [],
+            "details": "Create new Appwrite project in console, configure project settings, enable email/password authentication, set up OAuth providers (Google, GitHub), configure authentication security settings, and set up email templates for verification",
+            "status": "pending",
+            "testStrategy": "Verify project is accessible, authentication methods are enabled, and test user registration/login flows work correctly",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Create Core User and Course Collections",
+            "description": "Set up Users and Courses collections with all required attributes and relationships",
+            "dependencies": [
+              1
+            ],
+            "details": "Create Users collection with userId, name, avatar, role, createdAt, updatedAt attributes. Create Courses collection with courseId, title, slug, description, price, thumbnail, category, level, instructorId, status, totalDuration, totalLessons, publishedAt attributes. Set up proper data types and validation rules",
+            "status": "pending",
+            "testStrategy": "Test CRUD operations on both collections, verify all attributes are properly typed, and validate required field constraints",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Create Course Structure Collections (Modules and Lessons)",
+            "description": "Set up Modules and Lessons collections to define course curriculum structure",
+            "dependencies": [
+              2
+            ],
+            "details": "Create Modules collection with moduleId, courseId, title, description, order attributes. Create Lessons collection with lessonId, moduleId, courseId, title, description, videoUrl, duration, order, isFreePreview, resources attributes. Establish proper relationships between courses, modules, and lessons",
+            "status": "pending",
+            "testStrategy": "Test hierarchical relationships between courses, modules, and lessons. Verify ordering works correctly and foreign key constraints are enforced",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Create Transaction and Progress Tracking Collections",
+            "description": "Set up Purchases, Progress, and Reviews collections for user interactions and tracking",
+            "dependencies": [
+              2
+            ],
+            "details": "Create Purchases collection with purchaseId, userId, courseId, stripePaymentId, amount, status, purchasedAt attributes. Create Progress collection with progressId, userId, courseId, lessonId, completed, watchedSeconds attributes. Create Reviews collection with reviewId, userId, courseId, rating, comment attributes",
+            "status": "pending",
+            "testStrategy": "Test purchase tracking, progress updates, and review submissions. Verify user can only access their own data and progress tracking works accurately",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Create Categories Collection and Configure Indexes and Permissions",
+            "description": "Set up Categories collection and configure database indexes and security permissions for all collections",
+            "dependencies": [
+              3,
+              4
+            ],
+            "details": "Create Categories collection with categoryId, name, slug, description, icon, order attributes. Set up database indexes for performance optimization on frequently queried fields (courseId, userId, slug, etc.). Configure collection-level permissions for read/write access based on user roles and ownership",
+            "status": "pending",
+            "testStrategy": "Test category management, verify database performance with indexes, and validate security permissions prevent unauthorized access to collections",
+            "parentId": "undefined"
+          }
+        ],
+        "updatedAt": "2026-02-01T16:01:36.548Z"
+      },
+      {
+        "id": "3",
+        "title": "Cloudflare R2 Integration Setup",
+        "description": "Configure Cloudflare R2 storage for video, image, and resource file handling",
+        "details": "Set up Cloudflare R2 bucket and configure AWS SDK v3 client. Create utility functions for file upload, signed URL generation, and file deletion. Implement folder structure: videos/, images/, resources/, thumbnails/. Configure CORS settings for browser uploads. Create helper functions for generating time-limited signed URLs (1 hour expiry) for secure content access.",
+        "testStrategy": "Test file upload to R2 bucket, verify signed URL generation works correctly, test file deletion functionality. Validate CORS configuration allows browser uploads.",
+        "priority": "high",
+        "dependencies": [
+          "1"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set up Cloudflare R2 bucket and AWS SDK v3 client configuration",
+            "description": "Create and configure Cloudflare R2 bucket with proper settings and initialize AWS SDK v3 client for R2 operations",
+            "dependencies": [],
+            "details": "Create new R2 bucket in Cloudflare dashboard. Generate R2 API tokens with appropriate permissions. Configure AWS SDK v3 S3Client with R2 endpoint and credentials. Set up environment variables for R2 configuration including bucket name, access key, secret key, and endpoint URL.",
+            "status": "done",
+            "testStrategy": "Test bucket creation and verify AWS SDK client can connect to R2 endpoint successfully",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:04:00.703Z"
+          },
+          {
+            "id": 2,
+            "title": "Implement folder structure and file upload utility functions",
+            "description": "Create organized folder structure in R2 bucket and build utility functions for file upload operations",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement folder structure: videos/, images/, resources/, thumbnails/. Create uploadFile utility function that handles file uploads to appropriate folders based on file type. Add file validation, size limits, and error handling. Include progress tracking for large file uploads.",
+            "status": "done",
+            "testStrategy": "Test file uploads to each folder type, verify files are stored in correct locations with proper naming conventions",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:04:02.555Z"
+          },
+          {
+            "id": 3,
+            "title": "Create signed URL generation utility functions",
+            "description": "Build helper functions for generating time-limited signed URLs for secure content access",
+            "dependencies": [
+              1
+            ],
+            "details": "Create getSignedUrl utility function that generates presigned URLs with 1-hour expiry for secure file access. Implement different URL types for GET (download/view) and PUT (upload) operations. Add URL validation and error handling for expired or invalid URLs.",
+            "status": "done",
+            "testStrategy": "Test signed URL generation for different file types, verify URLs expire after 1 hour, and validate secure access works correctly",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:04:04.449Z"
+          },
+          {
+            "id": 4,
+            "title": "Implement file deletion utility functions",
+            "description": "Create utility functions for safely deleting files from R2 storage with proper error handling",
+            "dependencies": [
+              1
+            ],
+            "details": "Create deleteFile utility function that removes files from R2 bucket. Implement batch deletion for multiple files. Add safety checks to prevent accidental deletion of important files. Include error handling for non-existent files and permission issues.",
+            "status": "done",
+            "testStrategy": "Test single and batch file deletion operations, verify error handling for non-existent files, and validate proper cleanup",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:04:06.362Z"
+          },
+          {
+            "id": 5,
+            "title": "Configure CORS settings for browser uploads",
+            "description": "Set up CORS configuration to allow direct browser uploads to R2 bucket",
+            "dependencies": [
+              1
+            ],
+            "details": "Configure CORS policy in R2 bucket settings to allow browser uploads. Set allowed origins, methods (GET, POST, PUT, DELETE), and headers. Configure preflight request handling and credential settings. Test cross-origin requests from the application domain.",
+            "status": "done",
+            "testStrategy": "Test direct browser uploads to R2 bucket, verify CORS headers are properly set, and validate uploads work from different domains",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:04:08.227Z"
+          }
+        ],
+        "updatedAt": "2026-02-01T16:04:08.227Z"
+      },
+      {
+        "id": "4",
+        "title": "Authentication System Implementation",
+        "description": "Implement complete authentication flow using Appwrite Auth",
+        "details": "Create authentication context using Appwrite SDK. Implement registration with email verification, login/logout functionality, password reset flow. Create middleware for route protection. Build auth pages: /login, /register, /forgot-password, /reset-password. Implement session management with HTTP-only cookies. Add role-based access control (student, instructor, admin). Create auth utilities for checking user permissions.",
+        "testStrategy": "Test complete registration flow including email verification. Verify login/logout works correctly. Test password reset functionality. Validate session persistence and middleware protection.",
+        "priority": "high",
+        "dependencies": [
+          "2"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Setup Appwrite Authentication Context and SDK Integration",
+            "description": "Create authentication context using Appwrite SDK and configure authentication client",
+            "dependencies": [],
+            "details": "Initialize Appwrite client with authentication configuration. Create React context for authentication state management. Setup authentication provider component to wrap the application. Configure Appwrite project settings for authentication including OAuth providers if needed.",
+            "status": "done",
+            "testStrategy": "Test Appwrite client initialization and context provider setup. Verify authentication state is properly managed across components.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:09:58.486Z"
+          },
+          {
+            "id": 2,
+            "title": "Implement User Registration with Email Verification",
+            "description": "Build user registration functionality with email verification flow using Appwrite Auth",
+            "dependencies": [
+              1
+            ],
+            "details": "Create registration API endpoints and form components. Implement email verification process using Appwrite's verification system. Build registration page at /register with form validation. Handle registration errors and success states. Setup email templates for verification.",
+            "status": "done",
+            "testStrategy": "Test complete registration flow including form validation, email sending, and verification link functionality. Verify error handling for duplicate emails and invalid data.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:10:00.321Z"
+          },
+          {
+            "id": 3,
+            "title": "Build Login/Logout Functionality and Session Management",
+            "description": "Implement user login and logout with HTTP-only cookie session management",
+            "dependencies": [
+              1
+            ],
+            "details": "Create login page at /login with authentication form. Implement login/logout functions using Appwrite Auth. Setup HTTP-only cookie configuration for secure session storage. Handle authentication state changes and redirects. Implement remember me functionality.",
+            "status": "done",
+            "testStrategy": "Test login with valid and invalid credentials. Verify logout clears session properly. Test session persistence across browser refreshes and remember me functionality.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:10:02.170Z"
+          },
+          {
+            "id": 4,
+            "title": "Create Password Reset Flow and Pages",
+            "description": "Implement complete password reset functionality with forgot password and reset password pages",
+            "dependencies": [
+              1
+            ],
+            "details": "Build /forgot-password page with email input form. Create /reset-password page for new password entry. Implement password reset API using Appwrite's password recovery. Handle password reset email sending and token validation. Add proper error handling and user feedback.",
+            "status": "done",
+            "testStrategy": "Test forgot password email sending. Verify reset password link works correctly. Test password update functionality and validation. Ensure expired tokens are handled properly.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:10:03.986Z"
+          },
+          {
+            "id": 5,
+            "title": "Implement Role-Based Access Control and Route Protection",
+            "description": "Create middleware for route protection and role-based access control system for student, instructor, and admin roles",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Create authentication middleware for protected routes. Implement role-based access control with user roles (student, instructor, admin). Build auth utilities for checking user permissions. Create higher-order components for route protection. Setup role assignment during registration and admin management.",
+            "status": "done",
+            "testStrategy": "Test route protection blocks unauthorized access. Verify role-based permissions work correctly for different user types. Test permission utilities return correct access levels. Validate admin can manage user roles.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:10:05.846Z"
+          }
+        ],
+        "updatedAt": "2026-02-01T16:10:05.846Z"
+      },
+      {
+        "id": "5",
+        "title": "Basic Layout and Navigation Components",
+        "description": "Create responsive layout components with navigation and routing structure",
+        "details": "Build main layout component with header, footer, and sidebar. Create responsive navigation bar with logo, search bar, and auth buttons. Implement mobile hamburger menu. Build dashboard sidebar for authenticated users with role-based menu items. Create breadcrumb component for navigation. Implement dark/light mode toggle using next-themes. Use shadcn/ui components for consistent styling.",
+        "testStrategy": "Test responsive design across different screen sizes. Verify navigation works correctly for different user roles. Test dark/light mode switching functionality.",
+        "priority": "medium",
+        "dependencies": [
+          "4"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Main Layout Component with Header and Footer",
+            "description": "Build the main layout wrapper component that includes header and footer sections for consistent page structure",
+            "dependencies": [],
+            "details": "Create a MainLayout component using Next.js layout patterns. Include header with logo placement, footer with basic links, and main content area. Use shadcn/ui components for consistent styling. Ensure proper semantic HTML structure with header, main, and footer tags.",
+            "status": "done",
+            "testStrategy": "Test layout renders correctly on different pages. Verify header and footer appear consistently across routes.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:19:06.762Z"
+          },
+          {
+            "id": 2,
+            "title": "Build Responsive Navigation Bar with Auth Elements",
+            "description": "Create responsive navigation bar with logo, search functionality, and authentication buttons",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement navigation bar component with logo, search bar, and login/signup buttons. Use responsive design patterns to hide/show elements on different screen sizes. Integrate with authentication state to show user avatar/menu when logged in. Use shadcn/ui Button and Input components.",
+            "status": "done",
+            "testStrategy": "Test navigation responsiveness across mobile, tablet, and desktop. Verify auth buttons show/hide based on authentication state.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:19:08.605Z"
+          },
+          {
+            "id": 3,
+            "title": "Implement Mobile Hamburger Menu",
+            "description": "Create collapsible mobile navigation menu with hamburger icon for small screens",
+            "dependencies": [
+              2
+            ],
+            "details": "Build hamburger menu component that appears on mobile screens. Include slide-out or dropdown menu with navigation links. Use shadcn/ui Sheet or Dropdown components. Implement smooth animations for menu open/close. Include close button and overlay functionality.",
+            "status": "done",
+            "testStrategy": "Test hamburger menu functionality on mobile devices. Verify menu opens/closes smoothly and displays all navigation items.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:19:10.448Z"
+          },
+          {
+            "id": 4,
+            "title": "Create Dashboard Sidebar with Role-based Navigation",
+            "description": "Build dashboard sidebar component with role-based menu items for authenticated users",
+            "dependencies": [
+              1
+            ],
+            "details": "Create sidebar component for dashboard pages with navigation items based on user roles (student/instructor). Include icons and labels for each menu item. Implement active state highlighting. Use conditional rendering to show different menu items for students vs instructors. Integrate with routing for navigation.",
+            "status": "done",
+            "testStrategy": "Test sidebar shows correct menu items for different user roles. Verify active state highlighting works correctly. Test navigation between dashboard sections.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:19:12.284Z"
+          },
+          {
+            "id": 5,
+            "title": "Implement Dark/Light Mode Toggle and Breadcrumb Navigation",
+            "description": "Add theme switching functionality and breadcrumb component for enhanced navigation",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Integrate next-themes for dark/light mode switching. Create theme toggle button in navigation bar. Build breadcrumb component that shows current page hierarchy. Implement breadcrumb logic to generate paths based on current route. Style both components using shadcn/ui with proper theme support.",
+            "status": "done",
+            "testStrategy": "Test theme switching works across all components. Verify breadcrumb navigation displays correct path hierarchy. Test theme persistence across page refreshes.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:19:14.787Z"
+          }
+        ],
+        "updatedAt": "2026-02-01T16:19:14.787Z"
+      },
+      {
+        "id": "6",
+        "title": "File Upload System",
+        "description": "Create comprehensive file upload system for videos, images, and resources",
+        "details": "Build API routes: POST /api/upload/video, POST /api/upload/image, POST /api/upload/resource, DELETE /api/upload/[key]. Implement multipart upload for large video files. Create upload components with progress indicators and drag-and-drop functionality. Add file type validation and size limits (videos: 2GB, images: 10MB, resources: 100MB). Implement thumbnail generation for videos. Create upload queue system for multiple files.",
+        "testStrategy": "Test upload of different file types and sizes. Verify progress indicators work correctly. Test file validation and error handling. Validate files are properly stored in R2 with correct folder structure.",
+        "priority": "high",
+        "dependencies": [
+          "3"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Build File Upload API Routes",
+            "description": "Create API endpoints for handling different file types with proper validation and error handling",
+            "dependencies": [],
+            "details": "Implement POST /api/upload/video, POST /api/upload/image, POST /api/upload/resource, and DELETE /api/upload/[key] endpoints. Add file type validation, size limits (videos: 2GB, images: 10MB, resources: 100MB), and proper error responses. Integrate with Cloudflare R2 for file storage.",
+            "status": "done",
+            "testStrategy": "Test each endpoint with valid and invalid file types, test size limit enforcement, verify proper error messages for validation failures",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:25:13.925Z"
+          },
+          {
+            "id": 2,
+            "title": "Implement Multipart Upload for Large Files",
+            "description": "Create multipart upload functionality specifically for large video files to improve reliability",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement chunked upload mechanism for video files larger than 100MB. Create resume functionality for interrupted uploads. Add progress tracking and chunk validation. Handle multipart upload completion and cleanup of failed uploads.",
+            "status": "done",
+            "testStrategy": "Test large video file uploads, verify resume functionality works after interruption, test cleanup of incomplete uploads",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:25:16.252Z"
+          },
+          {
+            "id": 3,
+            "title": "Create Upload UI Components with Progress Indicators",
+            "description": "Build user interface components for file uploads with drag-and-drop and progress tracking",
+            "dependencies": [
+              1
+            ],
+            "details": "Create reusable upload components with drag-and-drop zones, file selection buttons, progress bars, and upload status indicators. Implement preview functionality for images and basic file info display. Add cancel upload functionality and error state handling.",
+            "status": "done",
+            "testStrategy": "Test drag-and-drop functionality across different browsers, verify progress indicators update correctly, test cancel upload feature",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:25:18.228Z"
+          },
+          {
+            "id": 4,
+            "title": "Implement Video Thumbnail Generation",
+            "description": "Create automatic thumbnail generation system for uploaded video files",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement server-side video processing to generate thumbnails at multiple timestamps (e.g., 10%, 25%, 50% of video duration). Store thumbnails in R2 thumbnails/ folder. Create API endpoint to retrieve thumbnail URLs. Handle video processing queue for background thumbnail generation.",
+            "status": "done",
+            "testStrategy": "Test thumbnail generation for various video formats, verify thumbnails are properly stored and accessible, test thumbnail retrieval API",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:25:20.163Z"
+          },
+          {
+            "id": 5,
+            "title": "Build Upload Queue System for Multiple Files",
+            "description": "Create queue management system to handle multiple concurrent file uploads efficiently",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Implement upload queue with configurable concurrency limits (e.g., max 3 simultaneous uploads). Add queue status tracking, retry logic for failed uploads, and batch upload completion notifications. Create queue management UI showing upload progress for all files.",
+            "status": "done",
+            "testStrategy": "Test multiple file uploads with queue management, verify concurrency limits work correctly, test retry functionality for failed uploads",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:25:21.994Z"
+          }
+        ],
+        "updatedAt": "2026-02-01T16:25:21.994Z"
+      },
+      {
+        "id": "7",
+        "title": "User Profile Management",
+        "description": "Implement user profile creation and management functionality",
+        "details": "Create user profile pages and forms. Build profile editing functionality with avatar upload. Implement password change feature. Create user settings page with notification preferences. Add profile validation and update logic. Store extended user data in Appwrite Users collection. Create profile picture upload with image resizing and optimization.",
+        "testStrategy": "Test profile creation and editing. Verify avatar upload and display works correctly. Test password change functionality. Validate user data persistence.",
+        "priority": "medium",
+        "dependencies": [
+          "4",
+          "6"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create User Profile Pages and Forms",
+            "description": "Build the user profile display page and profile editing forms with proper validation",
+            "dependencies": [],
+            "details": "Create /profile page to display user information. Build profile editing form with fields for name, bio, contact info. Implement form validation for required fields and data formats. Create responsive design for mobile and desktop views.",
+            "status": "done",
+            "testStrategy": "Test profile page displays user data correctly. Verify form validation works for all fields. Test responsive design on different screen sizes.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:27:08.305Z"
+          },
+          {
+            "id": 2,
+            "title": "Implement Avatar Upload and Image Processing",
+            "description": "Build profile picture upload functionality with image resizing and optimization",
+            "dependencies": [
+              1
+            ],
+            "details": "Create file upload component for profile pictures. Implement image resizing to standard dimensions (e.g., 200x200px). Add image optimization to reduce file size. Store images in Appwrite Storage with proper permissions. Handle image preview and cropping functionality.",
+            "status": "done",
+            "testStrategy": "Test image upload with various file formats and sizes. Verify image resizing and optimization works correctly. Test image display and storage persistence.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:27:10.319Z"
+          },
+          {
+            "id": 3,
+            "title": "Build Password Change Feature",
+            "description": "Implement secure password change functionality with proper validation",
+            "dependencies": [],
+            "details": "Create password change form with current password, new password, and confirm password fields. Implement password strength validation and matching confirmation. Use Appwrite Auth API to update user password securely. Add success/error feedback messages.",
+            "status": "done",
+            "testStrategy": "Test password change with valid and invalid current passwords. Verify password strength validation works. Test error handling for failed password updates.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:27:12.238Z"
+          },
+          {
+            "id": 4,
+            "title": "Create User Settings and Notification Preferences",
+            "description": "Build user settings page with notification preferences and account options",
+            "dependencies": [
+              1
+            ],
+            "details": "Create settings page with notification preference toggles (email notifications, course updates, marketing emails). Add account settings like timezone, language preferences. Implement settings persistence in Appwrite Users collection. Create intuitive UI for managing preferences.",
+            "status": "done",
+            "testStrategy": "Test notification preference toggles save correctly. Verify settings persistence across sessions. Test all account setting options work as expected.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:27:14.181Z"
+          },
+          {
+            "id": 5,
+            "title": "Implement Profile Data Validation and Update Logic",
+            "description": "Create comprehensive profile validation and update logic with Appwrite integration",
+            "dependencies": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "details": "Implement server-side validation for all profile fields. Create API endpoints for profile updates using Appwrite Users collection. Add client-side validation with real-time feedback. Implement optimistic updates with error rollback. Handle concurrent update conflicts and data synchronization.",
+            "status": "done",
+            "testStrategy": "Test all validation rules work correctly. Verify profile updates persist in database. Test error handling for failed updates and network issues. Validate concurrent update scenarios.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:27:16.181Z"
+          }
+        ],
+        "updatedAt": "2026-02-01T16:27:16.181Z"
+      },
+      {
+        "id": "8",
+        "title": "Course CRUD Operations",
+        "description": "Implement complete course creation, reading, updating, and deletion functionality",
+        "details": "Create API routes for course management: GET /api/courses, POST /api/courses, PUT /api/courses/[id], DELETE /api/courses/[id]. Implement course creation wizard with steps: basic info, curriculum, pricing, publish. Build course editing interface with rich text editor for descriptions. Add course status management (draft/published/archived). Implement slug generation and validation. Create course validation logic and error handling.",
+        "testStrategy": "Test complete course CRUD operations. Verify course creation wizard works through all steps. Test course editing and status changes. Validate slug generation and uniqueness.",
+        "priority": "high",
+        "dependencies": [
+          "2",
+          "6"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Course API Routes",
+            "description": "Create all RESTful API endpoints for course management operations",
+            "dependencies": [],
+            "details": "Implement GET /api/courses for listing courses, POST /api/courses for creating new courses, PUT /api/courses/[id] for updating existing courses, and DELETE /api/courses/[id] for deleting courses. Include proper request validation, error handling, and response formatting.",
+            "status": "done",
+            "testStrategy": "Test all CRUD operations with various payloads. Verify proper HTTP status codes and error responses. Test authentication and authorization for each endpoint.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:28:49.544Z"
+          },
+          {
+            "id": 2,
+            "title": "Build Course Creation Wizard",
+            "description": "Develop multi-step course creation interface with guided workflow",
+            "dependencies": [
+              1
+            ],
+            "details": "Create a step-by-step wizard with four main steps: basic course information (title, description, category), curriculum structure setup, pricing configuration, and final publish settings. Include form validation, progress indicators, and ability to save drafts at each step.",
+            "status": "done",
+            "testStrategy": "Test wizard navigation between steps. Verify form validation works at each step. Test draft saving and restoration functionality. Validate complete course creation flow.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:28:51.793Z"
+          },
+          {
+            "id": 3,
+            "title": "Implement Course Editing Interface",
+            "description": "Create comprehensive course editing interface with rich text capabilities",
+            "dependencies": [
+              1
+            ],
+            "details": "Build course editing page with rich text editor for course descriptions and content. Include image upload functionality, formatting options, and preview capabilities. Implement auto-save functionality and version control for course content changes.",
+            "status": "done",
+            "testStrategy": "Test rich text editor functionality including formatting and media uploads. Verify auto-save works correctly. Test course content updates and preview functionality.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:28:53.700Z"
+          },
+          {
+            "id": 4,
+            "title": "Add Course Status Management",
+            "description": "Implement course lifecycle status management system",
+            "dependencies": [
+              1
+            ],
+            "details": "Create status management for courses with three states: draft (editable, not public), published (live and purchasable), and archived (no longer available for purchase). Include status transition validation, bulk status operations, and status-based access control throughout the application.",
+            "status": "done",
+            "testStrategy": "Test status transitions and validation rules. Verify access control works based on course status. Test bulk status operations and status filtering in course listings.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:28:55.576Z"
+          },
+          {
+            "id": 5,
+            "title": "Implement Slug Generation and Validation",
+            "description": "Create automatic slug generation system with uniqueness validation",
+            "dependencies": [
+              1
+            ],
+            "details": "Build automatic slug generation from course titles with URL-safe formatting. Implement uniqueness validation to prevent duplicate slugs. Include manual slug editing capability with real-time availability checking. Add slug history tracking for SEO purposes and redirect management.",
+            "status": "done",
+            "testStrategy": "Test automatic slug generation from various course titles. Verify uniqueness validation prevents duplicates. Test manual slug editing and availability checking. Validate slug formatting and URL safety.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-01T16:28:57.511Z"
+          }
+        ],
+        "updatedAt": "2026-02-01T16:28:57.511Z"
+      },
+      {
+        "id": "9",
+        "title": "Module and Lesson Management",
+        "description": "Create module and lesson management system with drag-and-drop ordering",
+        "details": "Build API routes for modules: GET /api/modules/[courseId], POST /api/modules, PUT /api/modules/[id], DELETE /api/modules/[id], PUT /api/modules/reorder. Create lesson APIs: GET /api/lessons/[id], POST /api/lessons, PUT /api/lessons/[id], DELETE /api/lessons/[id], PUT /api/lessons/reorder. Implement drag-and-drop interface for reordering modules and lessons. Create lesson editor with video upload, description, and resource attachment. Add lesson preview functionality for free lessons.",
+        "testStrategy": "Test module and lesson creation, editing, and deletion. Verify drag-and-drop reordering works correctly. Test lesson video upload and resource attachment. Validate lesson preview functionality.",
+        "priority": "high",
+        "dependencies": [
+          "8"
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Build Module API Routes",
+            "description": "Create comprehensive API endpoints for module management including CRUD operations and reordering",
+            "dependencies": [],
+            "details": "Implement GET /api/modules/[courseId] to fetch all modules for a course, POST /api/modules to create new modules, PUT /api/modules/[id] to update existing modules, DELETE /api/modules/[id] to remove modules, and PUT /api/modules/reorder for drag-and-drop ordering. Include proper validation, error handling, and authorization checks.",
+            "status": "pending",
+            "testStrategy": "Test all CRUD operations with valid and invalid data. Verify authorization prevents unauthorized access. Test reordering functionality with various scenarios.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Build Lesson API Routes",
+            "description": "Create comprehensive API endpoints for lesson management including CRUD operations and reordering",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement GET /api/lessons/[id] to fetch lesson details, POST /api/lessons to create new lessons, PUT /api/lessons/[id] to update existing lessons, DELETE /api/lessons/[id] to remove lessons, and PUT /api/lessons/reorder for drag-and-drop ordering. Include proper validation, error handling, and authorization checks.",
+            "status": "pending",
+            "testStrategy": "Test all CRUD operations with valid and invalid data. Verify authorization prevents unauthorized access. Test reordering functionality maintains proper lesson sequence.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Implement Drag-and-Drop Interface",
+            "description": "Create interactive drag-and-drop interface for reordering modules and lessons in the curriculum",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Build React components with drag-and-drop functionality using libraries like react-beautiful-dnd or @dnd-kit. Implement visual feedback during dragging, handle drop zones for modules and lessons, and integrate with reorder API endpoints. Include optimistic updates and error handling for failed reorder operations.",
+            "status": "pending",
+            "testStrategy": "Test drag-and-drop functionality across different browsers. Verify reordering updates correctly in database. Test edge cases like dragging to invalid positions.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Create Lesson Editor with Media Upload",
+            "description": "Build comprehensive lesson editor with video upload, description editing, and resource attachment capabilities",
+            "dependencies": [
+              2
+            ],
+            "details": "Create lesson editor interface with rich text editor for descriptions, video upload integration with Cloudflare R2, file attachment system for resources, and lesson metadata management. Include progress indicators for uploads, file validation, and preview functionality. Support multiple file formats and size limits.",
+            "status": "pending",
+            "testStrategy": "Test video upload with various file formats and sizes. Verify resource attachment functionality. Test rich text editor saves content correctly. Validate file size and format restrictions.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Add Lesson Preview Functionality",
+            "description": "Implement lesson preview system for free lessons with proper access control and video streaming",
+            "dependencies": [
+              4
+            ],
+            "details": "Create lesson preview components that allow viewing of free lessons without enrollment. Implement access control logic to determine which lessons are previewable. Add video player with streaming capabilities, lesson description display, and clear indicators for premium content. Include preview duration limits if needed.",
+            "status": "pending",
+            "testStrategy": "Test preview functionality shows only designated free lessons. Verify video streaming works correctly. Test access control prevents unauthorized preview access. Validate preview indicators display properly.",
+            "parentId": "undefined"
+          }
+        ]
+      },
+      {
+        "id": "10",
+        "title": "Course Listing and Search",
+        "description": "Build public course catalog with filtering, searching, and pagination",
+        "details": "Create /courses page with grid/list view toggle. Implement filtering by category, level, and price range. Add search functionality for course titles and descriptions. Build sorting options (newest, price, popularity). Implement pagination with infinite scroll option. Create course card component with thumbnail, title, price, rating, and instructor info. Add category-based course browsing at /categories/[slug].",
+        "testStrategy": "Test course listing displays correctly. Verify filtering and search functionality works. Test pagination and infinite scroll. Validate course cards display proper information.",
+        "priority": "medium",
+        "dependencies": [
+          "8"
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Course Listing Page Layout",
+            "description": "Build the main /courses page with responsive grid/list view toggle functionality",
+            "dependencies": [],
+            "details": "Create the main courses page component with responsive design. Implement view toggle between grid and list layouts. Set up basic page structure with header, filters sidebar, and main content area. Include loading states and empty states for when no courses are found.",
+            "status": "pending",
+            "testStrategy": "Test page renders correctly in both grid and list views. Verify responsive design works on mobile and desktop. Test view toggle functionality switches layouts properly.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement Course Card Component",
+            "description": "Create reusable course card component with thumbnail, title, price, rating, and instructor information",
+            "dependencies": [
+              1
+            ],
+            "details": "Build a comprehensive course card component that displays course thumbnail image, title, price, star rating, instructor name and avatar. Include hover effects and responsive design. Add fallback images and handle missing data gracefully. Implement click handlers for navigation to course detail page.",
+            "status": "pending",
+            "testStrategy": "Test course cards display all information correctly. Verify fallback images work when thumbnails are missing. Test hover effects and click navigation. Validate responsive behavior on different screen sizes.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Build Filtering and Search System",
+            "description": "Implement comprehensive filtering by category, level, price range and search functionality for course titles and descriptions",
+            "dependencies": [
+              1
+            ],
+            "details": "Create filter sidebar with category dropdown, level selection (beginner/intermediate/advanced), and price range slider. Implement real-time search functionality that searches through course titles and descriptions. Add clear filters option and active filter indicators. Integrate with backend API for filtered results.",
+            "status": "pending",
+            "testStrategy": "Test all filter options work correctly and update results in real-time. Verify search functionality finds relevant courses. Test filter combinations and clear filters functionality. Validate API integration returns correct filtered results.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Implement Sorting and Pagination",
+            "description": "Add sorting options (newest, price, popularity) and pagination with infinite scroll capability",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Create sorting dropdown with options for newest first, price (low to high/high to low), and popularity. Implement pagination with traditional page numbers and infinite scroll option. Add loading indicators for pagination and infinite scroll. Handle edge cases like last page and network errors.",
+            "status": "pending",
+            "testStrategy": "Test all sorting options work correctly and update course order. Verify pagination loads correct number of courses per page. Test infinite scroll loads more courses smoothly. Validate loading states and error handling.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Create Category-Based Course Browsing",
+            "description": "Build category pages at /categories/[slug] for browsing courses by specific categories",
+            "dependencies": [
+              2,
+              3,
+              4
+            ],
+            "details": "Create dynamic category pages that display courses filtered by specific category. Implement category slug routing and validation. Add category header with description and course count. Reuse existing filtering, sorting, and pagination components. Include breadcrumb navigation and SEO optimization for category pages.",
+            "status": "pending",
+            "testStrategy": "Test category pages load correct courses for each category. Verify slug routing works properly. Test filtering and sorting work within category context. Validate breadcrumb navigation and SEO meta tags.",
+            "parentId": "undefined"
+          }
+        ]
+      },
+      {
+        "id": "11",
+        "title": "Course Detail Page",
+        "description": "Create comprehensive course detail page with purchase functionality",
+        "details": "Build /courses/[slug] page with course overview, instructor information, curriculum preview, and pricing. Display module/lesson structure without revealing content. Add 'What you'll learn' section and course requirements. Implement course reviews and ratings display. Create purchase button with authentication check. Add course preview functionality for free lessons. Include related courses section.",
+        "testStrategy": "Test course detail page displays all information correctly. Verify curriculum preview shows structure without content. Test purchase button functionality and authentication flow.",
+        "priority": "medium",
+        "dependencies": [
+          "9",
+          "10"
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Course Detail Page Layout and Basic Components",
+            "description": "Build the main course detail page structure with responsive layout and core components",
+            "dependencies": [],
+            "details": "Create /courses/[slug] page with Next.js dynamic routing. Build responsive layout with hero section, sidebar for course info, and main content area. Create reusable components for course header, instructor card, and pricing section. Implement proper SEO meta tags and structured data for courses.",
+            "status": "pending",
+            "testStrategy": "Test page renders correctly on different screen sizes. Verify dynamic routing works with course slugs. Test SEO meta tags are properly generated.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement Course Overview and Curriculum Preview",
+            "description": "Build course overview section with curriculum structure display without revealing lesson content",
+            "dependencies": [
+              1
+            ],
+            "details": "Create course overview component with description, what you'll learn section, and requirements. Build curriculum preview showing module/lesson structure with titles and durations only. Implement expandable/collapsible module sections. Add course statistics like total lessons, duration, and difficulty level.",
+            "status": "pending",
+            "testStrategy": "Test curriculum preview shows structure without revealing actual content. Verify expandable modules work correctly. Test course overview displays all required information.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Add Instructor Information and Course Reviews Section",
+            "description": "Display instructor profile information and implement course reviews and ratings display",
+            "dependencies": [
+              1
+            ],
+            "details": "Create instructor profile section with bio, credentials, and other courses. Build reviews and ratings display component with star ratings, review text, and user information. Implement pagination for reviews. Add overall rating calculation and distribution chart. Include helpful/unhelpful voting for reviews.",
+            "status": "pending",
+            "testStrategy": "Test instructor information displays correctly. Verify reviews pagination works. Test rating calculations and distribution display. Validate review voting functionality.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Implement Purchase Button and Authentication Flow",
+            "description": "Create purchase functionality with authentication checks and payment integration",
+            "dependencies": [
+              1
+            ],
+            "details": "Build purchase button component with authentication state checking. Implement redirect to login if user not authenticated. Create purchase flow with price display and payment integration. Add enrollment status checking to show appropriate button state (purchase/enrolled/preview). Include loading states and error handling for purchase process.",
+            "status": "pending",
+            "testStrategy": "Test purchase button shows correct state based on authentication and enrollment. Verify authentication redirect works. Test purchase flow handles errors gracefully. Validate enrollment status updates correctly.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Add Course Preview and Related Courses Section",
+            "description": "Implement free lesson preview functionality and related courses recommendations",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Create course preview modal or embedded player for free lessons. Implement access control to show only preview-enabled lessons. Build related courses section with recommendation algorithm based on category and tags. Add course comparison functionality. Include social sharing buttons for course page.",
+            "status": "pending",
+            "testStrategy": "Test course preview only shows authorized free lessons. Verify related courses display relevant recommendations. Test social sharing functionality works correctly. Validate preview modal/player functions properly.",
+            "parentId": "undefined"
+          }
+        ]
+      },
+      {
+        "id": "12",
+        "title": "Stripe Payment Integration",
+        "description": "Implement Stripe Checkout integration for course purchases",
+        "details": "Set up Stripe configuration and create checkout session API: POST /api/payments/create-checkout. Implement Stripe Checkout redirect flow with course metadata. Create success and cancel pages: /checkout/success, /checkout/cancel. Add Stripe webhook handler: POST /api/payments/webhook for payment confirmation. Implement webhook signature verification and idempotent processing. Create purchase record creation logic.",
+        "testStrategy": "Test complete purchase flow from course page to success. Verify Stripe webhook processes payments correctly. Test webhook signature verification. Validate purchase records are created properly.",
+        "priority": "high",
+        "dependencies": [
+          "11"
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set up Stripe configuration and environment",
+            "description": "Configure Stripe API keys and initialize Stripe SDK in the application",
+            "dependencies": [],
+            "details": "Install Stripe SDK, configure environment variables for publishable and secret keys, set up Stripe client initialization, and create configuration utilities for different environments (development, production)",
+            "status": "pending",
+            "testStrategy": "Test Stripe SDK initialization and verify API key configuration works correctly",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Create checkout session API endpoint",
+            "description": "Implement POST /api/payments/create-checkout endpoint to create Stripe checkout sessions",
+            "dependencies": [
+              1
+            ],
+            "details": "Build API endpoint that accepts course ID and user information, creates Stripe checkout session with course metadata, line items, and success/cancel URLs. Include proper error handling and validation",
+            "status": "pending",
+            "testStrategy": "Test API endpoint creates valid checkout sessions and handles various course scenarios and error cases",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Implement Stripe Checkout redirect flow",
+            "description": "Build the frontend integration for Stripe Checkout with course purchase flow",
+            "dependencies": [
+              2
+            ],
+            "details": "Create purchase button component that calls checkout session API and redirects to Stripe Checkout. Include loading states, error handling, and proper course metadata passing. Ensure smooth user experience from course page to payment",
+            "status": "pending",
+            "testStrategy": "Test complete checkout flow from course page through Stripe payment interface",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Create success and cancel pages",
+            "description": "Build /checkout/success and /checkout/cancel pages for post-payment user experience",
+            "dependencies": [
+              3
+            ],
+            "details": "Create success page that displays purchase confirmation, course access information, and next steps. Build cancel page with options to retry payment or return to course. Include proper session handling and user feedback",
+            "status": "pending",
+            "testStrategy": "Test both success and cancel pages display correctly and provide appropriate user guidance",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Implement Stripe webhook handler with verification",
+            "description": "Create POST /api/payments/webhook endpoint for payment confirmation and purchase record creation",
+            "dependencies": [
+              4
+            ],
+            "details": "Build webhook endpoint that verifies Stripe signatures, handles payment_intent.succeeded events, creates purchase records in database, and grants course access. Implement idempotent processing to prevent duplicate purchases",
+            "status": "pending",
+            "testStrategy": "Test webhook processes payments correctly, verifies signatures, and creates purchase records without duplicates",
+            "parentId": "undefined"
+          }
+        ]
+      },
+      {
+        "id": "13",
+        "title": "Purchase Verification and Access Control",
+        "description": "Implement purchase verification system and content access control",
+        "details": "Create purchase verification API: GET /api/payments/verify/[courseId]. Implement middleware for protecting course content routes. Build access control logic for video URLs and resources. Create purchase history API: GET /api/payments/history. Add purchase status checking utilities. Implement automatic access granting after successful payment via webhook.",
+        "testStrategy": "Test purchase verification works correctly. Verify access control prevents unauthorized content access. Test purchase history display. Validate automatic access granting after payment.",
+        "priority": "high",
+        "dependencies": [
+          "12"
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Purchase Verification API Endpoint",
+            "description": "Implement GET /api/payments/verify/[courseId] endpoint to check if user has purchased a specific course",
+            "dependencies": [],
+            "details": "Create API route handler that accepts courseId parameter and user session. Query payment database to verify if user has active purchase for the course. Return purchase status, expiry date if applicable, and access permissions. Handle edge cases like expired purchases or refunded payments.",
+            "status": "pending",
+            "testStrategy": "Test with valid and invalid courseIds, authenticated and unauthenticated users, expired purchases, and refunded payments",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement Content Access Control Middleware",
+            "description": "Create middleware to protect course content routes and verify user purchase status before granting access",
+            "dependencies": [
+              1
+            ],
+            "details": "Build middleware function that intercepts requests to protected course content routes. Integrate with purchase verification API to check user access rights. Redirect unauthorized users to course purchase page. Cache verification results for performance. Handle different content types (videos, resources, quizzes).",
+            "status": "pending",
+            "testStrategy": "Test middleware blocks unauthorized access, allows purchased users, handles caching correctly, and redirects appropriately",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Build Access Control Logic for Video URLs and Resources",
+            "description": "Implement secure access control system for video streaming URLs and downloadable course resources",
+            "dependencies": [
+              2
+            ],
+            "details": "Create signed URL generation for video content with expiration times. Implement resource access validation for PDFs, documents, and other downloadable materials. Add IP-based access restrictions if needed. Create access logging for audit purposes. Implement rate limiting to prevent abuse.",
+            "status": "pending",
+            "testStrategy": "Test signed URLs expire correctly, unauthorized users cannot access resources, rate limiting works, and access logging captures events",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Create Purchase History API",
+            "description": "Implement GET /api/payments/history endpoint to retrieve user's complete purchase history",
+            "dependencies": [
+              1
+            ],
+            "details": "Build API endpoint that returns paginated list of user's purchases including course details, purchase date, amount paid, payment method, and current access status. Include filtering options by date range and course category. Add purchase receipt generation functionality. Implement proper data privacy controls.",
+            "status": "pending",
+            "testStrategy": "Test pagination works correctly, filtering returns accurate results, purchase data is complete and accurate, and privacy controls prevent data leaks",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Implement Automatic Access Granting via Payment Webhook",
+            "description": "Create webhook handler to automatically grant course access after successful payment completion",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Build webhook endpoint to receive payment confirmation from Stripe. Validate webhook signature for security. Update user permissions in database to grant course access. Send confirmation email to user. Handle webhook retries and idempotency. Log all webhook events for debugging and audit purposes.",
+            "status": "pending",
+            "testStrategy": "Test webhook receives and processes payments correctly, access is granted immediately, email notifications are sent, and duplicate webhooks are handled properly",
+            "parentId": "undefined"
+          }
+        ]
+      },
+      {
+        "id": "14",
+        "title": "Video Player and Streaming",
+        "description": "Create secure video player with progress tracking and quality options",
+        "details": "Build custom video player component with HTML5 video element. Implement signed URL generation for video access: GET /api/lessons/[id]/video. Add video progress tracking and resume functionality. Create quality selection options if multiple formats available. Implement video loading states and error handling. Add keyboard shortcuts and fullscreen support. Prevent video downloads and right-click context menu.",
+        "testStrategy": "Test video player loads and plays correctly. Verify signed URLs work and expire properly. Test progress tracking and resume functionality. Validate video protection measures work.",
+        "priority": "high",
+        "dependencies": [
+          "13"
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Custom Video Player Component",
+            "description": "Build a custom video player component using HTML5 video element with custom controls and styling",
+            "dependencies": [],
+            "details": "Create a React component that wraps HTML5 video element. Implement custom controls including play/pause, progress bar, volume control, and time display. Style the player to match the application design. Add loading states and error handling for video playback issues.",
+            "status": "pending",
+            "testStrategy": "Test video player renders correctly and all custom controls function properly. Verify loading states display during video initialization and error states show appropriate messages.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement Signed URL Generation API",
+            "description": "Create secure video streaming endpoint with signed URL generation for authorized access",
+            "dependencies": [
+              1
+            ],
+            "details": "Build GET /api/lessons/[id]/video endpoint that generates time-limited signed URLs for video access. Implement authentication checks to ensure only enrolled students can access videos. Configure URL expiration and security headers to prevent unauthorized sharing.",
+            "status": "pending",
+            "testStrategy": "Test signed URLs are generated correctly and expire after specified time. Verify unauthorized users cannot access video URLs. Test that expired URLs return appropriate error responses.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Add Video Progress Tracking and Resume",
+            "description": "Implement video progress tracking with automatic save and resume functionality",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Track video playback progress and save to database at regular intervals. Implement resume functionality that starts video from last watched position. Create progress indicators showing completion percentage. Handle edge cases like video seeking and multiple device synchronization.",
+            "status": "pending",
+            "testStrategy": "Test progress is saved correctly during video playback. Verify resume functionality starts video from correct position. Test progress synchronization across different sessions and devices.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Implement Quality Selection and Keyboard Controls",
+            "description": "Add video quality selection options and keyboard shortcuts for enhanced user experience",
+            "dependencies": [
+              1
+            ],
+            "details": "Create quality selection dropdown if multiple video formats are available. Implement keyboard shortcuts for play/pause (spacebar), seek forward/backward (arrow keys), volume control, and fullscreen toggle (f key). Add fullscreen support with proper event handling and UI adjustments.",
+            "status": "pending",
+            "testStrategy": "Test quality selection changes video source correctly. Verify all keyboard shortcuts work as expected. Test fullscreen mode enters and exits properly with correct UI behavior.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Implement Video Protection Measures",
+            "description": "Add security features to prevent video downloads and unauthorized access",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Disable right-click context menu on video player. Prevent video downloads by removing download attributes and implementing custom event handlers. Add overlay protection to prevent screen recording detection where possible. Implement additional security headers and content protection measures.",
+            "status": "pending",
+            "testStrategy": "Test right-click context menu is disabled on video player. Verify video download prevention measures are working. Test that security measures don't interfere with normal video playback functionality.",
+            "parentId": "undefined"
+          }
+        ]
+      },
+      {
+        "id": "15",
+        "title": "Learning Progress Tracking",
+        "description": "Implement comprehensive learning progress tracking system",
+        "details": "Create progress tracking APIs: GET /api/progress/[courseId], POST /api/progress. Implement lesson completion tracking with video watch percentage. Build course progress calculation logic. Create progress visualization components (progress bars, completion percentages). Add 'Continue Learning' functionality to resume from last position. Implement progress persistence across sessions.",
+        "testStrategy": "Test progress tracking updates correctly during video playback. Verify lesson completion marks properly. Test progress persistence and resume functionality. Validate progress calculations are accurate.",
+        "priority": "medium",
+        "dependencies": [
+          "14"
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Progress Tracking API Endpoints",
+            "description": "Implement REST API endpoints for progress tracking functionality",
+            "dependencies": [],
+            "details": "Create GET /api/progress/[courseId] endpoint to retrieve user progress for a specific course. Implement POST /api/progress endpoint to update progress data. Include proper error handling, validation, and authentication middleware. Structure response data to include lesson completion status, video watch percentages, and overall course progress.",
+            "status": "pending",
+            "testStrategy": "Test API endpoints with various course IDs and progress data. Verify authentication requirements and error responses for invalid requests.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement Lesson Completion Tracking Logic",
+            "description": "Build backend logic to track lesson completion with video watch percentage",
+            "dependencies": [
+              1
+            ],
+            "details": "Create database schema for storing lesson progress including video watch percentage, completion timestamps, and completion status. Implement logic to calculate lesson completion based on video watch percentage thresholds (e.g., 80% watched = completed). Add functions to update progress in real-time during video playback and mark lessons as completed when criteria are met.",
+            "status": "pending",
+            "testStrategy": "Test lesson completion marking with different video watch percentages. Verify completion status updates correctly and timestamps are recorded accurately.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Build Course Progress Calculation Engine",
+            "description": "Develop comprehensive course progress calculation logic",
+            "dependencies": [
+              2
+            ],
+            "details": "Create algorithms to calculate overall course progress based on completed lessons, modules, and assignments. Implement weighted progress calculation considering different content types. Build functions to calculate completion percentages, estimated time remaining, and learning streaks. Include logic for handling optional vs required content in progress calculations.",
+            "status": "pending",
+            "testStrategy": "Test progress calculations with various course structures and completion scenarios. Verify accuracy of percentage calculations and time estimates.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Create Progress Visualization Components",
+            "description": "Build React components for displaying learning progress visually",
+            "dependencies": [
+              3
+            ],
+            "details": "Create reusable progress bar components with customizable styling and animations. Build circular progress indicators for course completion percentages. Implement lesson progress cards showing individual lesson status. Create course overview progress dashboard with module-level breakdowns. Add responsive design for mobile and desktop viewing.",
+            "status": "pending",
+            "testStrategy": "Test progress components render correctly with different progress values. Verify responsive design works across devices and animations perform smoothly.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Implement Continue Learning and Progress Persistence",
+            "description": "Add functionality to resume learning from last position with session persistence",
+            "dependencies": [
+              4
+            ],
+            "details": "Implement 'Continue Learning' feature that tracks and resumes from the last accessed lesson and video timestamp. Build progress persistence system using local storage and database synchronization. Create session management to maintain progress across browser sessions and devices. Add automatic progress saving during video playback and lesson navigation.",
+            "status": "pending",
+            "testStrategy": "Test continue learning functionality resumes from correct position. Verify progress persists across browser sessions and device switches. Test automatic progress saving during video playback.",
+            "parentId": "undefined"
+          }
+        ]
+      },
+      {
+        "id": "16",
+        "title": "Student Dashboard",
+        "description": "Create comprehensive student dashboard with course management",
+        "details": "Build /dashboard page with overview of purchased courses and progress. Create /dashboard/my-courses with grid of purchased courses showing progress. Implement /dashboard/profile for profile management. Build /dashboard/purchases for purchase history. Add course continuation functionality and recently accessed courses. Create learning statistics and achievements display.",
+        "testStrategy": "Test dashboard displays correct user data and courses. Verify my courses shows accurate progress information. Test profile editing functionality. Validate purchase history displays correctly.",
+        "priority": "medium",
+        "dependencies": [
+          "15"
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Build Main Dashboard Overview Page",
+            "description": "Create the main /dashboard page with overview of purchased courses and progress",
+            "dependencies": [],
+            "details": "Implement the main dashboard page at /dashboard route. Display user's purchased courses overview, progress statistics, recently accessed courses, and quick navigation to other dashboard sections. Include welcome message and learning statistics summary.",
+            "status": "pending",
+            "testStrategy": "Test dashboard displays correct user data, purchased courses count, and progress overview. Verify recently accessed courses are shown correctly.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Create My Courses Grid Page",
+            "description": "Build /dashboard/my-courses with grid layout showing purchased courses and progress",
+            "dependencies": [
+              1
+            ],
+            "details": "Create the my courses page with responsive grid layout displaying all purchased courses. Show course thumbnails, titles, progress bars, completion percentages, and continue learning buttons. Implement filtering and sorting options.",
+            "status": "pending",
+            "testStrategy": "Verify my courses grid shows accurate progress information for each course. Test filtering and sorting functionality works correctly.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Implement Profile Management Page",
+            "description": "Build /dashboard/profile for user profile editing and management",
+            "dependencies": [
+              1
+            ],
+            "details": "Create profile management page allowing users to edit personal information, change password, update avatar, and manage account settings. Include form validation and success/error messaging.",
+            "status": "pending",
+            "testStrategy": "Test profile editing functionality saves changes correctly. Verify form validation works and error handling displays appropriate messages.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Build Purchase History Page",
+            "description": "Create /dashboard/purchases displaying complete purchase history with details",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement purchase history page showing chronological list of all course purchases. Display purchase date, course details, payment amount, payment method, and download receipt functionality. Include search and filter options.",
+            "status": "pending",
+            "testStrategy": "Validate purchase history displays correctly with accurate transaction details. Test search and filter functionality works properly.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Add Learning Statistics and Achievements Display",
+            "description": "Implement learning statistics dashboard and achievements system display",
+            "dependencies": [
+              2,
+              3,
+              4
+            ],
+            "details": "Create comprehensive learning statistics showing total learning time, courses completed, certificates earned, and learning streaks. Implement achievements system with badges and milestones. Add visual charts and progress indicators.",
+            "status": "pending",
+            "testStrategy": "Test learning statistics calculate and display correctly. Verify achievements system shows appropriate badges and milestones based on user progress.",
+            "parentId": "undefined"
+          }
+        ]
+      },
+      {
+        "id": "17",
+        "title": "Course Learning Interface",
+        "description": "Build the main course learning interface with lesson navigation",
+        "details": "Create /learn/[courseSlug] layout with sidebar navigation and main content area. Build /learn/[courseSlug]/[lessonId] lesson viewer with video player, lesson content, and resources. Implement lesson navigation (previous/next) and module accordion. Add lesson completion marking and progress updates. Create resource download functionality with access control. Include lesson notes and bookmarking features.",
+        "testStrategy": "Test course learning interface navigation works correctly. Verify lesson content loads properly with access control. Test resource downloads work for authorized users. Validate lesson completion and progress updates.",
+        "priority": "high",
+        "dependencies": [
+          "14",
+          "15"
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Course Learning Layout Structure",
+            "description": "Build the main layout for /learn/[courseSlug] with sidebar navigation and content area",
+            "dependencies": [],
+            "details": "Create the main course learning layout component with responsive sidebar navigation showing course modules and lessons. Implement the main content area that will display lesson content. Add proper routing structure for course learning pages. Include header with course title and progress indicator.",
+            "status": "pending",
+            "testStrategy": "Test layout renders correctly on different screen sizes. Verify sidebar navigation displays course structure properly. Test routing between course learning pages.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Build Lesson Viewer Component",
+            "description": "Create /learn/[courseSlug]/[lessonId] page with video player and lesson content display",
+            "dependencies": [
+              1
+            ],
+            "details": "Build the lesson viewer page component that displays individual lessons. Integrate video player for lesson videos with playback controls. Create lesson content area for text, images, and other materials. Add lesson resources section with downloadable files. Implement responsive design for mobile and desktop viewing.",
+            "status": "pending",
+            "testStrategy": "Test lesson content loads correctly for different lesson types. Verify video player works with various video formats. Test responsive design on mobile devices.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Implement Lesson Navigation System",
+            "description": "Add previous/next lesson navigation and module accordion functionality",
+            "dependencies": [
+              1,
+              2
+            ],
+            "details": "Create navigation controls for moving between lessons (previous/next buttons). Implement module accordion in sidebar that expands/collapses to show lessons. Add keyboard shortcuts for navigation. Include breadcrumb navigation showing current position in course. Handle edge cases for first/last lessons.",
+            "status": "pending",
+            "testStrategy": "Test navigation works correctly between lessons. Verify module accordion expands/collapses properly. Test keyboard shortcuts functionality. Validate breadcrumb navigation accuracy.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Add Lesson Completion and Progress Tracking",
+            "description": "Implement lesson completion marking and progress updates functionality",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Create lesson completion marking system with visual indicators. Implement progress tracking that updates when lessons are completed. Add progress bar showing overall course completion percentage. Store completion status in database with user association. Create API endpoints for updating and retrieving progress data.",
+            "status": "pending",
+            "testStrategy": "Test lesson completion marking works correctly. Verify progress updates are saved and persist across sessions. Test progress bar displays accurate completion percentage.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Build Resource Management and Notes Features",
+            "description": "Create resource download functionality with access control and lesson notes/bookmarking",
+            "dependencies": [
+              2,
+              4
+            ],
+            "details": "Implement resource download functionality with proper access control checks. Create lesson notes feature allowing users to add personal notes to lessons. Add bookmarking system for marking important lessons. Build notes management interface with search and organization. Implement access control to ensure only enrolled users can download resources.",
+            "status": "pending",
+            "testStrategy": "Test resource downloads work only for authorized users. Verify notes can be created, edited, and deleted. Test bookmarking functionality saves correctly. Validate access control prevents unauthorized downloads.",
+            "parentId": "undefined"
+          }
+        ]
+      },
+      {
+        "id": "18",
+        "title": "Instructor Dashboard",
+        "description": "Create instructor dashboard for course management and analytics",
+        "details": "Build /instructor dashboard with course overview and statistics. Create /instructor/courses for course management with edit/delete actions. Implement /instructor/courses/new for course creation wizard. Build /instructor/courses/[id]/edit for course editing. Create /instructor/courses/[id]/curriculum for module/lesson management. Add basic instructor analytics (enrollments, revenue).",
+        "testStrategy": "Test instructor dashboard displays correct course data. Verify course creation and editing workflows. Test curriculum management interface. Validate instructor can only access their own courses.",
+        "priority": "medium",
+        "dependencies": [
+          "9"
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Build Main Instructor Dashboard Page",
+            "description": "Create the main instructor dashboard at /instructor with course overview and statistics display",
+            "dependencies": [],
+            "details": "Implement /instructor route with dashboard layout showing instructor's course overview, total enrollments, revenue statistics, and recent activity. Include navigation to other instructor sections and summary cards for key metrics.",
+            "status": "pending",
+            "testStrategy": "Test dashboard displays correct course data for logged-in instructor. Verify statistics are accurate and navigation links work properly.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Create Course Management Interface",
+            "description": "Build /instructor/courses page for managing instructor's courses with edit and delete actions",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement course listing page showing instructor's courses in a table/grid format with edit and delete buttons. Add course status indicators, enrollment counts, and quick action buttons. Include search and filter functionality.",
+            "status": "pending",
+            "testStrategy": "Verify instructor can only see their own courses. Test edit and delete actions work correctly. Validate search and filter functionality.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Implement Course Creation Wizard",
+            "description": "Build /instructor/courses/new page with step-by-step course creation wizard",
+            "dependencies": [
+              2
+            ],
+            "details": "Create multi-step course creation form with basic info, description, pricing, category selection, and thumbnail upload. Include form validation, progress indicator, and draft saving functionality. Integrate with Cloudflare R2 for image uploads.",
+            "status": "pending",
+            "testStrategy": "Test complete course creation workflow. Verify form validation works correctly. Test draft saving and image upload functionality.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Build Course Editing Interface",
+            "description": "Create /instructor/courses/[id]/edit page for comprehensive course editing",
+            "dependencies": [
+              3
+            ],
+            "details": "Implement course editing form with all course properties editable. Include course settings, pricing updates, category changes, and thumbnail replacement. Add course status management (draft, published, archived).",
+            "status": "pending",
+            "testStrategy": "Test course editing saves changes correctly. Verify instructor can only edit their own courses. Test course status changes and validation.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Create Curriculum Management System",
+            "description": "Build /instructor/courses/[id]/curriculum for managing course modules and lessons",
+            "dependencies": [
+              4
+            ],
+            "details": "Implement curriculum editor with drag-and-drop module/lesson reordering. Add module creation, lesson management, video upload integration, and content organization. Include lesson preview and publishing controls.",
+            "status": "pending",
+            "testStrategy": "Test curriculum management interface allows proper module/lesson organization. Verify drag-and-drop functionality works. Test lesson creation and video upload integration.",
+            "parentId": "undefined"
+          }
+        ]
+      },
+      {
+        "id": "19",
+        "title": "Admin Dashboard and User Management",
+        "description": "Implement admin dashboard with comprehensive platform management",
+        "details": "Create /admin dashboard with platform overview and key metrics. Build /admin/users for user management with role assignment: PUT /api/admin/users/[id]/role. Implement /admin/courses for all courses management. Create /admin/purchases for purchase oversight. Add /admin/categories for category management. Implement user account enable/disable functionality.",
+        "testStrategy": "Test admin dashboard shows platform-wide statistics. Verify user management and role assignment works. Test admin can manage all courses and purchases. Validate admin-only access control.",
+        "priority": "medium",
+        "dependencies": [
+          "18"
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Admin Dashboard Main Page with Platform Overview",
+            "description": "Build the main admin dashboard page at /admin with comprehensive platform statistics and key metrics display",
+            "dependencies": [],
+            "details": "Create /admin route with dashboard layout showing platform overview including total users, courses, purchases, and revenue metrics. Implement charts and statistics widgets using appropriate UI components. Add navigation sidebar for admin sections.",
+            "status": "pending",
+            "testStrategy": "Test dashboard loads correctly and displays accurate platform-wide statistics. Verify charts render properly and navigation works.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement User Management Interface",
+            "description": "Build comprehensive user management system at /admin/users with role assignment capabilities",
+            "dependencies": [
+              1
+            ],
+            "details": "Create /admin/users page with user listing, search, and filtering. Implement user details view with role management. Build PUT /api/admin/users/[id]/role endpoint for role assignment. Add user account enable/disable functionality with appropriate UI controls.",
+            "status": "pending",
+            "testStrategy": "Test user listing displays correctly with search and filters. Verify role assignment API works and updates user permissions. Test account enable/disable functionality.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Build Admin Course Management System",
+            "description": "Create admin interface for managing all platform courses at /admin/courses",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement /admin/courses page showing all courses across the platform with instructor information. Add course approval/rejection workflow, course visibility controls, and bulk actions. Include course statistics and performance metrics for admin oversight.",
+            "status": "pending",
+            "testStrategy": "Test admin can view all courses regardless of instructor. Verify course management actions work correctly. Test bulk operations and approval workflow.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Create Purchase Management and Oversight System",
+            "description": "Build admin interface for monitoring and managing all platform purchases at /admin/purchases",
+            "dependencies": [
+              1
+            ],
+            "details": "Create /admin/purchases page with comprehensive purchase history, refund management, and transaction details. Implement purchase analytics, revenue tracking, and dispute resolution tools. Add export functionality for financial reporting.",
+            "status": "pending",
+            "testStrategy": "Test purchase listing shows all platform transactions. Verify refund processing works correctly. Test analytics and export functionality.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Implement Category Management System",
+            "description": "Build admin interface for managing course categories at /admin/categories",
+            "dependencies": [
+              1
+            ],
+            "details": "Create /admin/categories page for creating, editing, and organizing course categories. Implement category hierarchy management, bulk operations, and category assignment tools. Add category usage statistics and course distribution analytics.",
+            "status": "pending",
+            "testStrategy": "Test category CRUD operations work correctly. Verify category hierarchy and assignment functionality. Test category statistics display accurately.",
+            "parentId": "undefined"
+          }
+        ]
+      },
+      {
+        "id": "20",
+        "title": "Reviews and Ratings System",
+        "description": "Implement course review and rating functionality",
+        "details": "Create review APIs: GET /api/reviews/[courseId], POST /api/reviews, PUT /api/reviews/[id], DELETE /api/reviews/[id]. Build review submission form for purchased users only. Implement rating display with star components. Create review moderation for inappropriate content. Add review sorting and pagination. Calculate and display average course ratings.",
+        "testStrategy": "Test review submission works for purchased users only. Verify rating calculations are accurate. Test review editing and deletion by review authors. Validate review display and sorting functionality.",
+        "priority": "medium",
+        "dependencies": [
+          "13"
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Review API Endpoints",
+            "description": "Implement all review-related API endpoints for CRUD operations",
+            "dependencies": [],
+            "details": "Create API routes: GET /api/reviews/[courseId] for fetching course reviews, POST /api/reviews for creating new reviews, PUT /api/reviews/[id] for updating existing reviews, and DELETE /api/reviews/[id] for deleting reviews. Include proper authentication middleware and validation schemas.",
+            "status": "pending",
+            "testStrategy": "Test all CRUD operations with valid and invalid data. Verify authentication requirements and proper error responses.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Build Review Submission Form",
+            "description": "Create user interface for submitting course reviews with purchase validation",
+            "dependencies": [
+              1
+            ],
+            "details": "Build a review submission form component that validates user has purchased the course before allowing review submission. Include star rating selector, text area for review content, and form validation. Integrate with review API endpoints.",
+            "status": "pending",
+            "testStrategy": "Test form only appears for users who purchased the course. Verify form validation and successful submission to API.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Implement Star Rating Display Components",
+            "description": "Create reusable star rating components for displaying and inputting ratings",
+            "dependencies": [],
+            "details": "Build interactive star rating components that can display current ratings and allow user input. Include hover effects, half-star support, and accessibility features. Create both read-only and interactive versions for different use cases.",
+            "status": "pending",
+            "testStrategy": "Test star components display correctly across different rating values. Verify interactive functionality and accessibility compliance.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Create Review Moderation System",
+            "description": "Implement content moderation features for inappropriate review content",
+            "dependencies": [
+              1
+            ],
+            "details": "Build moderation system to flag and manage inappropriate review content. Include automated content filtering, admin review interface, and ability to hide/approve reviews. Add reporting functionality for users to flag inappropriate content.",
+            "status": "pending",
+            "testStrategy": "Test content filtering catches inappropriate content. Verify admin moderation interface works correctly and review visibility updates properly.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Add Review Sorting, Pagination and Rating Calculations",
+            "description": "Implement review sorting options, pagination, and average rating calculations",
+            "dependencies": [
+              1,
+              3
+            ],
+            "details": "Add sorting options for reviews (newest, oldest, highest rated, lowest rated). Implement pagination for review lists. Create system to calculate and display average course ratings with proper weighting. Update course data with calculated averages.",
+            "status": "pending",
+            "testStrategy": "Test all sorting options work correctly. Verify pagination handles large review sets. Validate rating calculations are accurate and update properly when new reviews are added.",
+            "parentId": "undefined"
+          }
+        ]
+      },
+      {
+        "id": "21",
+        "title": "Category Management System",
+        "description": "Implement course category management and browsing",
+        "details": "Create category CRUD operations and admin interface. Build /categories/[slug] pages for category-based course browsing. Implement category filtering in course listings. Add category icons and descriptions. Create category hierarchy support for future expansion. Implement category-based course recommendations.",
+        "testStrategy": "Test category creation and management by admins. Verify category-based course filtering works. Test category pages display correct courses. Validate category hierarchy if implemented.",
+        "priority": "low",
+        "dependencies": [
+          "10"
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Category Data Model and Database Schema",
+            "description": "Design and implement the category data structure with fields for name, slug, description, icon, and hierarchy support",
+            "dependencies": [],
+            "details": "Create Appwrite collection for categories with fields: name (string), slug (string, unique), description (text), icon (string/URL), parentId (string, optional for hierarchy), isActive (boolean), createdAt/updatedAt timestamps. Set up proper indexes for slug and parentId. Configure collection permissions for admin write access.",
+            "status": "pending",
+            "testStrategy": "Test category creation with valid data. Verify unique slug constraint. Test hierarchy relationships with parent/child categories.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Build Category CRUD API Routes",
+            "description": "Implement server-side API endpoints for category creation, reading, updating, and deletion operations",
+            "dependencies": [
+              1
+            ],
+            "details": "Create API routes: GET /api/categories (list all), GET /api/categories/[id] (get single), POST /api/categories (create), PUT /api/categories/[id] (update), DELETE /api/categories/[id] (delete). Implement proper validation using Zod schemas. Add admin-only middleware protection. Include error handling and proper HTTP status codes.",
+            "status": "pending",
+            "testStrategy": "Test all CRUD operations with valid and invalid data. Verify admin-only access restrictions. Test error handling for non-existent categories.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Create Admin Category Management Interface",
+            "description": "Build admin dashboard pages for managing categories with forms for creation and editing",
+            "dependencies": [
+              2
+            ],
+            "details": "Create /admin/categories page with category list, search, and pagination. Build category creation form with name, slug auto-generation, description, icon upload/selection. Implement category editing modal/page. Add delete confirmation dialog. Include category hierarchy visualization if parent categories exist. Use shadcn/ui components for consistent styling.",
+            "status": "pending",
+            "testStrategy": "Test category creation form validation. Verify slug auto-generation from name. Test category editing and deletion. Validate admin-only access to management interface.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Implement Category-Based Course Filtering",
+            "description": "Add category filtering functionality to course listings and search results",
+            "dependencies": [
+              2
+            ],
+            "details": "Modify course listing APIs to accept category filter parameter. Update course search functionality to include category-based filtering. Create category filter UI component with checkboxes or dropdown. Implement URL query parameter handling for category filters. Update course cards to display category information. Add 'Clear filters' functionality.",
+            "status": "pending",
+            "testStrategy": "Test category filtering on course listings. Verify multiple category selection works. Test URL parameter persistence and sharing. Validate filter reset functionality.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Build Category Browse Pages and Course Recommendations",
+            "description": "Create dynamic category pages at /categories/[slug] with course listings and recommendation system",
+            "dependencies": [
+              4
+            ],
+            "details": "Create dynamic route /categories/[slug] page showing category details and associated courses. Implement category-based course recommendations using related categories or popular courses. Add category breadcrumbs and navigation. Include category description, icon, and course count. Implement pagination for category course listings. Add SEO meta tags for category pages.",
+            "status": "pending",
+            "testStrategy": "Test category page rendering with valid slugs. Verify course recommendations display correctly. Test pagination on category pages. Validate SEO meta tags and breadcrumb navigation.",
+            "parentId": "undefined"
+          }
+        ]
+      },
+      {
+        "id": "22",
+        "title": "Search and Analytics Implementation",
+        "description": "Enhance search functionality and implement basic analytics",
+        "details": "Improve search with fuzzy matching and relevance scoring. Create analytics API: GET /api/admin/analytics with revenue, user registration trends, popular courses. Implement search suggestions and autocomplete. Add search result highlighting. Create analytics dashboard with charts and metrics. Implement course popularity tracking based on views and purchases.",
+        "testStrategy": "Test enhanced search returns relevant results. Verify analytics display accurate platform metrics. Test search suggestions work correctly. Validate analytics calculations are accurate.",
+        "priority": "medium",
+        "dependencies": [
+          "19"
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Enhanced Search with Fuzzy Matching",
+            "description": "Enhance the existing search functionality with fuzzy matching and relevance scoring capabilities",
+            "dependencies": [],
+            "details": "Implement fuzzy search algorithm using libraries like Fuse.js or custom Levenshtein distance. Add relevance scoring based on title matches, description matches, and course popularity. Update search API endpoint to handle fuzzy queries and return scored results.",
+            "status": "pending",
+            "testStrategy": "Test search returns relevant results for misspelled queries. Verify relevance scoring ranks results appropriately. Test search performance with large datasets.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Build Search Suggestions and Autocomplete",
+            "description": "Implement search suggestions and autocomplete functionality for improved user experience",
+            "dependencies": [
+              1
+            ],
+            "details": "Create autocomplete API endpoint that returns suggestions based on partial input. Implement debounced search input component with dropdown suggestions. Add popular search terms and course title suggestions. Cache frequent searches for better performance.",
+            "status": "pending",
+            "testStrategy": "Test autocomplete suggestions appear correctly. Verify debouncing prevents excessive API calls. Test suggestion relevance and performance.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Add Search Result Highlighting",
+            "description": "Implement highlighting of search terms in search results for better visibility",
+            "dependencies": [
+              1
+            ],
+            "details": "Create text highlighting utility function that marks search terms in results. Update search result components to display highlighted text in course titles and descriptions. Handle multiple search terms and case-insensitive highlighting.",
+            "status": "pending",
+            "testStrategy": "Test search terms are properly highlighted in results. Verify highlighting works with multiple terms. Test case-insensitive highlighting functionality.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Create Analytics API and Data Collection",
+            "description": "Build analytics API endpoint and implement data collection for platform metrics",
+            "dependencies": [],
+            "details": "Create GET /api/admin/analytics endpoint returning revenue, user registration trends, and popular courses. Implement course popularity tracking based on views and purchases. Set up data aggregation queries for analytics calculations. Add course view tracking middleware.",
+            "status": "pending",
+            "testStrategy": "Test analytics API returns accurate data. Verify course popularity tracking works correctly. Test data aggregation performance and accuracy.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Build Analytics Dashboard with Charts",
+            "description": "Create comprehensive analytics dashboard with interactive charts and metrics visualization",
+            "dependencies": [
+              4
+            ],
+            "details": "Build analytics dashboard page with charts for revenue trends, user registrations, and course popularity. Implement interactive charts using Chart.js or similar library. Add date range filters and metric comparison features. Create responsive dashboard layout for different screen sizes.",
+            "status": "pending",
+            "testStrategy": "Test dashboard displays charts correctly. Verify interactive features work properly. Test responsive design on different devices. Validate chart data accuracy.",
+            "parentId": "undefined"
+          }
+        ]
+      },
+      {
+        "id": "23",
+        "title": "Performance Optimization",
+        "description": "Implement performance optimizations and caching strategies",
+        "details": "Implement Next.js Image optimization for course thumbnails and avatars. Add ISR (Incremental Static Regeneration) for course listings. Implement client-side caching with SWR or React Query. Add lazy loading for video content and images. Optimize bundle size with code splitting. Implement CDN caching headers for static assets. Add database query optimization and indexing.",
+        "testStrategy": "Test page load times meet performance requirements (<1.5s FCP). Verify image optimization works correctly. Test caching strategies improve performance. Run Lighthouse audits to validate performance scores >90.",
+        "priority": "medium",
+        "dependencies": [
+          "17",
+          "20"
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Next.js Image Optimization",
+            "description": "Set up Next.js Image component optimization for course thumbnails and user avatars",
+            "dependencies": [],
+            "details": "Configure Next.js Image component with proper sizing, quality settings, and format optimization. Replace all img tags with Next.js Image component for course thumbnails and user avatars. Set up image domains in next.config.js for external image sources. Implement responsive image sizing with different breakpoints.",
+            "status": "pending",
+            "testStrategy": "Test image loading performance and verify different formats are served based on browser support. Validate responsive sizing works across devices.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Add ISR for Course Listings",
+            "description": "Implement Incremental Static Regeneration for course listing pages",
+            "dependencies": [
+              1
+            ],
+            "details": "Configure ISR for course listing pages with appropriate revalidation intervals. Set up static generation for course detail pages with on-demand revalidation. Implement fallback strategies for new courses. Configure ISR for category and search result pages.",
+            "status": "pending",
+            "testStrategy": "Test that course listings are statically generated and revalidated correctly. Verify new courses appear without full rebuild.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Implement Client-side Caching with SWR",
+            "description": "Set up SWR for client-side data fetching and caching strategies",
+            "dependencies": [],
+            "details": "Install and configure SWR for API data fetching. Implement custom hooks for course data, user progress, and purchase history. Set up cache invalidation strategies and error handling. Configure background revalidation and focus revalidation settings.",
+            "status": "pending",
+            "testStrategy": "Test data caching works correctly and stale data is revalidated. Verify offline functionality and error states.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Add Lazy Loading and Code Splitting",
+            "description": "Implement lazy loading for video content and optimize bundle size with code splitting",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Implement lazy loading for video players and course images using Intersection Observer. Set up dynamic imports for heavy components like video players and course editors. Configure Next.js code splitting for route-based and component-based splitting. Optimize third-party library imports.",
+            "status": "pending",
+            "testStrategy": "Test lazy loading triggers correctly on scroll. Verify bundle sizes are reduced and components load on demand. Run Lighthouse audits to validate performance improvements.",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Database Query Optimization and CDN Setup",
+            "description": "Optimize database queries and implement CDN caching headers for static assets",
+            "dependencies": [
+              4
+            ],
+            "details": "Add database indexes for frequently queried fields (courseId, userId, category). Optimize API routes with query batching and pagination. Implement CDN caching headers for static assets with appropriate cache-control directives. Set up database connection pooling and query optimization.",
+            "status": "pending",
+            "testStrategy": "Test page load times meet <1.5s FCP requirement. Run database query performance tests. Verify CDN caching works correctly and Lighthouse scores >90.",
+            "parentId": "undefined"
+          }
+        ]
+      },
+      {
+        "id": "24",
+        "title": "Security Hardening and Validation",
+        "description": "Implement comprehensive security measures and input validation",
+        "details": "Add input validation and sanitization on all API endpoints using Zod schemas. Implement rate limiting on authentication and payment endpoints. Add CSRF protection and security headers. Enhance content protection with additional signed URL validation. Implement API route authentication middleware. Add XSS prevention measures and content security policy.",
+        "testStrategy": "Test input validation prevents malicious data. Verify rate limiting works on protected endpoints. Test security headers are properly set. Validate content protection prevents unauthorized access.",
+        "priority": "high",
+        "dependencies": [
+          "22"
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Input Validation with Zod Schemas",
+            "description": "Add comprehensive input validation and sanitization on all API endpoints using Zod schemas",
+            "dependencies": [],
+            "details": "Create Zod validation schemas for all API endpoints including user registration, course creation, payment processing, and content management. Implement middleware to validate request bodies, query parameters, and route parameters. Add sanitization for string inputs to prevent injection attacks. Create reusable validation utilities and error handling for validation failures.",
+            "status": "pending",
+            "testStrategy": "Test that malicious input is rejected, valid input passes validation, and appropriate error messages are returned for invalid data",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement Rate Limiting on Critical Endpoints",
+            "description": "Add rate limiting protection on authentication and payment endpoints to prevent abuse",
+            "dependencies": [
+              1
+            ],
+            "details": "Implement rate limiting middleware using libraries like express-rate-limit or custom Redis-based solution. Configure different rate limits for authentication endpoints (login, register, password reset) and payment endpoints. Set up IP-based and user-based rate limiting. Add proper error responses when rate limits are exceeded. Configure rate limit headers in responses.",
+            "status": "pending",
+            "testStrategy": "Test that rate limits are enforced correctly, legitimate users aren't blocked, and attackers are prevented from brute force attempts",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Add CSRF Protection and Security Headers",
+            "description": "Implement CSRF protection and configure comprehensive security headers",
+            "dependencies": [],
+            "details": "Add CSRF token generation and validation for state-changing operations. Configure security headers including Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, and Strict-Transport-Security. Implement CSRF middleware for forms and API calls. Set up proper CORS configuration for API endpoints.",
+            "status": "pending",
+            "testStrategy": "Test CSRF protection prevents cross-site request forgery attacks, security headers are properly set, and legitimate requests work correctly",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Enhance Content Protection with Signed URL Validation",
+            "description": "Implement additional validation for signed URLs to protect premium content access",
+            "dependencies": [
+              1
+            ],
+            "details": "Add enhanced validation for AWS S3 signed URLs including expiration checks, user authorization verification, and content access logging. Implement middleware to validate signed URL parameters and ensure users have proper permissions. Add URL tampering detection and logging of suspicious access attempts. Create content access audit trail.",
+            "status": "pending",
+            "testStrategy": "Test that only authorized users can access content, expired URLs are rejected, and tampering attempts are detected and logged",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Implement API Authentication Middleware and XSS Prevention",
+            "description": "Add comprehensive API route authentication middleware and XSS prevention measures",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "Create authentication middleware for API routes to verify JWT tokens and user permissions. Implement role-based access control for different API endpoints. Add XSS prevention through output encoding, input sanitization, and Content Security Policy configuration. Set up secure cookie handling with httpOnly, secure, and sameSite flags. Implement session management security.",
+            "status": "pending",
+            "testStrategy": "Test that unauthenticated requests are blocked, role-based access works correctly, XSS attacks are prevented, and secure session management functions properly",
+            "parentId": "undefined"
+          }
+        ]
+      },
+      {
+        "id": "25",
+        "title": "Testing and Production Deployment",
+        "description": "Implement comprehensive testing and prepare for production deployment",
+        "details": "Set up unit tests for utility functions and API routes using Jest. Implement integration tests for critical user flows (registration, purchase, learning). Add end-to-end tests using Playwright for complete user journeys. Create production environment configuration and deployment scripts. Set up monitoring and error tracking. Implement health check endpoints and logging. Create backup and recovery procedures.",
+        "testStrategy": "Run complete test suite and ensure >90% code coverage. Test all critical user flows work correctly. Verify production deployment works without errors. Test monitoring and error tracking capture issues properly.",
+        "priority": "high",
+        "dependencies": [
+          "23",
+          "24"
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set up comprehensive unit testing with Jest",
+            "description": "Implement unit tests for utility functions and API routes using Jest framework",
+            "dependencies": [],
+            "details": "Create Jest configuration and test files for all utility functions, API routes, and core business logic. Set up test database and mocking for external dependencies. Implement tests for authentication, course management, payment processing, and user management functions. Ensure proper test isolation and cleanup.",
+            "status": "pending",
+            "testStrategy": "Run unit tests and verify >90% code coverage for critical functions",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "Implement integration tests for critical user flows",
+            "description": "Create integration tests for registration, purchase, and learning workflows",
+            "dependencies": [
+              1
+            ],
+            "details": "Build integration test suite covering user registration flow, course purchase process, and learning progression. Test API endpoints work together correctly, database transactions are handled properly, and user sessions persist across requests. Include tests for payment processing integration and email notifications.",
+            "status": "pending",
+            "testStrategy": "Verify all critical user journeys work end-to-end without errors",
+            "parentId": "undefined"
+          },
+          {
+            "id": 3,
+            "title": "Add end-to-end tests using Playwright",
+            "description": "Implement E2E tests for complete user journeys using Playwright framework",
+            "dependencies": [
+              2
+            ],
+            "details": "Set up Playwright configuration and create E2E test scenarios covering full user workflows from registration to course completion. Test cross-browser compatibility, responsive design, and user interface interactions. Include tests for payment flows, course navigation, and dashboard functionality.",
+            "status": "pending",
+            "testStrategy": "Run E2E tests across multiple browsers and verify complete user workflows",
+            "parentId": "undefined"
+          },
+          {
+            "id": 4,
+            "title": "Create production environment and deployment configuration",
+            "description": "Set up production environment configuration and automated deployment scripts",
+            "dependencies": [
+              3
+            ],
+            "details": "Create production environment variables, database configuration, and security settings. Build deployment scripts for automated CI/CD pipeline. Configure production server settings, SSL certificates, and domain setup. Implement environment-specific configurations for database connections, API keys, and third-party integrations.",
+            "status": "pending",
+            "testStrategy": "Test deployment process in staging environment and verify production configuration",
+            "parentId": "undefined"
+          },
+          {
+            "id": 5,
+            "title": "Implement monitoring, logging, and health checks",
+            "description": "Set up comprehensive monitoring, error tracking, logging, and backup procedures",
+            "dependencies": [
+              4
+            ],
+            "details": "Implement health check endpoints for application and database status. Set up error tracking with services like Sentry or similar. Create comprehensive logging for API requests, errors, and user actions. Implement monitoring dashboards for system performance. Create automated backup procedures for database and file storage with recovery testing.",
+            "status": "pending",
+            "testStrategy": "Test monitoring captures errors correctly and backup/recovery procedures work as expected",
+            "parentId": "undefined"
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "version": "1.0.0",
+      "lastModified": "2026-02-01T16:28:57.512Z",
+      "taskCount": 25,
+      "completedCount": 7,
+      "tags": [
+        "master"
+      ]
+    }
+  }
+}

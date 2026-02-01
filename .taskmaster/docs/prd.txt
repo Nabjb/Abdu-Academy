@@ -1,0 +1,574 @@
+# ABDU Academy - Course Platform PRD
+## Product Requirements Document
+
+---
+
+## 1. Overview
+
+### 1.1 Product Vision
+ABDU Academy is a premium online course platform that enables instructors to sell educational content to students. The platform provides a seamless learning experience where users must purchase courses before accessing content, with secure payment processing and reliable content delivery.
+
+### 1.2 Tech Stack (Strict Requirements)
+- **Frontend & Backend**: Next.js 16 (App Router)
+- **Database & Authentication**: Appwrite
+- **File Storage**: Cloudflare R2
+- **Payment Processing**: Stripe
+
+### 1.3 Target Users
+- **Students**: Individuals seeking to purchase and consume educational content
+- **Instructors/Admins**: Content creators who upload and manage courses
+
+---
+
+## 2. Core Features
+
+### 2.1 Authentication System
+**Using Appwrite Auth**
+
+#### 2.1.1 User Registration
+- Email/password registration
+- Email verification flow
+- Profile creation with name and avatar
+- Role assignment (student by default)
+
+#### 2.1.2 User Login
+- Email/password login
+- Session management with Appwrite
+- "Remember me" functionality
+- Secure logout
+
+#### 2.1.3 Password Management
+- Forgot password flow with email reset
+- Password change from settings
+- Password strength validation
+
+#### 2.1.4 User Roles
+- **Student**: Can browse, purchase, and view purchased courses
+- **Instructor**: Can create, edit, and manage courses
+- **Admin**: Full system access, user management, analytics
+
+### 2.2 Course Management
+
+#### 2.2.1 Course Structure
+A course consists of:
+- **Course metadata**: title, description, price, thumbnail, category, level (beginner/intermediate/advanced)
+- **Modules**: Logical groupings of lessons within a course
+- **Lessons**: Individual content units containing video, text, or downloadable resources
+- **Course status**: draft, published, archived
+
+#### 2.2.2 Course Creation (Instructor/Admin)
+- Multi-step course creation wizard
+- Rich text editor for course and lesson descriptions
+- Video upload to Cloudflare R2 with progress indicator
+- Thumbnail and resource file uploads
+- Module and lesson ordering with drag-and-drop
+- Preview course before publishing
+- Save as draft functionality
+
+#### 2.2.3 Course Listing (Public)
+- Grid/list view of published courses
+- Filter by category, level, price range
+- Search by title and description
+- Sort by newest, price, popularity
+- Pagination with infinite scroll option
+
+#### 2.2.4 Course Detail Page
+- Course overview with instructor info
+- Module/lesson breakdown (preview structure)
+- Price display with purchase button
+- Student reviews and ratings
+- "What you'll learn" section
+- Course requirements/prerequisites
+
+### 2.3 Payment System
+
+#### 2.3.1 Stripe Integration
+- Stripe Checkout for secure payments
+- Support for credit/debit cards
+- Stripe webhooks for payment confirmation
+- Automatic receipt generation
+
+#### 2.3.2 Purchase Flow
+1. User clicks "Buy Course" on course page
+2. Redirect to Stripe Checkout with course details
+3. Stripe processes payment
+4. Webhook confirms payment to backend
+5. Backend grants course access in Appwrite
+6. User redirected to success page
+7. Access immediately available in "My Courses"
+
+#### 2.3.3 Purchase Records
+- Store purchase history in Appwrite
+- Track payment ID, amount, date, status
+- Link purchase to user and course
+
+#### 2.3.4 Pricing Features
+- Fixed pricing per course
+- Future: discount codes/coupons
+- Future: course bundles
+
+### 2.4 Content Delivery
+
+#### 2.4.1 Video Streaming
+- Videos stored in Cloudflare R2
+- Signed URLs for secure access (time-limited)
+- Video player with quality options
+- Progress tracking (resume where left off)
+- Prevent unauthorized downloads
+
+#### 2.4.2 Downloadable Resources
+- PDF, documents, code files stored in R2
+- Secure download links for purchased users only
+- Resource organization per lesson
+
+#### 2.4.3 Access Control
+- Verify purchase before serving content
+- Middleware protection for course content routes
+- API route protection for content URLs
+
+### 2.5 Student Dashboard
+
+#### 2.5.1 My Courses
+- Grid of purchased courses
+- Progress percentage per course
+- Continue where left off
+- Course completion status
+
+#### 2.5.2 Learning Progress
+- Track lesson completion
+- Track video watch progress
+- Course completion certificates (future)
+- Learning streaks/statistics
+
+#### 2.5.3 Profile Management
+- Edit profile information
+- Change password
+- View purchase history
+- Notification preferences
+
+### 2.6 Instructor/Admin Dashboard
+
+#### 2.6.1 Course Management
+- List all created courses
+- Edit existing courses
+- View enrollment statistics
+- Publish/unpublish courses
+
+#### 2.6.2 Analytics (Admin)
+- Total revenue
+- Course sales breakdown
+- User registration trends
+- Popular courses
+
+#### 2.6.3 User Management (Admin)
+- View all users
+- Change user roles
+- Disable/enable accounts
+
+---
+
+## 3. Database Schema (Appwrite Collections)
+
+### 3.1 Users Collection
+Extended profile data (Appwrite handles auth)
+```
+- userId (string, indexed) - links to Appwrite auth
+- name (string)
+- avatar (string) - R2 URL
+- role (string) - student/instructor/admin
+- createdAt (datetime)
+- updatedAt (datetime)
+```
+
+### 3.2 Courses Collection
+```
+- courseId (string, primary)
+- title (string, indexed)
+- slug (string, unique, indexed)
+- description (string)
+- shortDescription (string)
+- price (number)
+- currency (string, default: USD)
+- thumbnail (string) - R2 URL
+- category (string, indexed)
+- level (string) - beginner/intermediate/advanced
+- instructorId (string, indexed)
+- status (string) - draft/published/archived
+- totalDuration (number) - minutes
+- totalLessons (number)
+- createdAt (datetime)
+- updatedAt (datetime)
+- publishedAt (datetime)
+```
+
+### 3.3 Modules Collection
+```
+- moduleId (string, primary)
+- courseId (string, indexed)
+- title (string)
+- description (string)
+- order (number)
+- createdAt (datetime)
+```
+
+### 3.4 Lessons Collection
+```
+- lessonId (string, primary)
+- moduleId (string, indexed)
+- courseId (string, indexed)
+- title (string)
+- description (string)
+- videoUrl (string) - R2 URL
+- duration (number) - seconds
+- order (number)
+- isFreePreview (boolean)
+- resources (array of objects) - {name, url, type}
+- createdAt (datetime)
+```
+
+### 3.5 Purchases Collection
+```
+- purchaseId (string, primary)
+- userId (string, indexed)
+- courseId (string, indexed)
+- stripePaymentId (string)
+- stripeSessionId (string)
+- amount (number)
+- currency (string)
+- status (string) - pending/completed/refunded
+- purchasedAt (datetime)
+```
+
+### 3.6 Progress Collection
+```
+- progressId (string, primary)
+- userId (string, indexed)
+- courseId (string, indexed)
+- lessonId (string, indexed)
+- completed (boolean)
+- watchedSeconds (number)
+- lastWatchedAt (datetime)
+```
+
+### 3.7 Reviews Collection
+```
+- reviewId (string, primary)
+- userId (string, indexed)
+- courseId (string, indexed)
+- rating (number) - 1-5
+- comment (string)
+- createdAt (datetime)
+```
+
+### 3.8 Categories Collection
+```
+- categoryId (string, primary)
+- name (string)
+- slug (string, unique)
+- description (string)
+- icon (string)
+- order (number)
+```
+
+---
+
+## 4. API Routes Structure (Next.js App Router)
+
+### 4.1 Authentication Routes
+```
+POST /api/auth/register - User registration
+POST /api/auth/login - User login
+POST /api/auth/logout - User logout
+POST /api/auth/forgot-password - Request password reset
+POST /api/auth/reset-password - Reset password with token
+GET  /api/auth/session - Get current session
+```
+
+### 4.2 Course Routes
+```
+GET    /api/courses - List courses (public, with filters)
+GET    /api/courses/[slug] - Get course details
+POST   /api/courses - Create course (instructor/admin)
+PUT    /api/courses/[id] - Update course (instructor/admin)
+DELETE /api/courses/[id] - Delete course (admin)
+GET    /api/courses/[id]/lessons - Get course lessons (purchased users)
+```
+
+### 4.3 Module Routes
+```
+GET    /api/modules/[courseId] - Get modules for course
+POST   /api/modules - Create module (instructor/admin)
+PUT    /api/modules/[id] - Update module
+DELETE /api/modules/[id] - Delete module
+PUT    /api/modules/reorder - Reorder modules
+```
+
+### 4.4 Lesson Routes
+```
+GET    /api/lessons/[id] - Get lesson details (access check)
+POST   /api/lessons - Create lesson
+PUT    /api/lessons/[id] - Update lesson
+DELETE /api/lessons/[id] - Delete lesson
+PUT    /api/lessons/reorder - Reorder lessons
+GET    /api/lessons/[id]/video - Get signed video URL
+```
+
+### 4.5 Payment Routes
+```
+POST /api/payments/create-checkout - Create Stripe checkout session
+POST /api/payments/webhook - Stripe webhook handler
+GET  /api/payments/history - User purchase history
+GET  /api/payments/verify/[courseId] - Check purchase status
+```
+
+### 4.6 Progress Routes
+```
+GET  /api/progress/[courseId] - Get user progress for course
+POST /api/progress - Update lesson progress
+GET  /api/progress/my-courses - Get all user courses with progress
+```
+
+### 4.7 Upload Routes
+```
+POST /api/upload/video - Upload video to R2
+POST /api/upload/image - Upload image to R2
+POST /api/upload/resource - Upload resource file to R2
+DELETE /api/upload/[key] - Delete file from R2
+```
+
+### 4.8 Admin Routes
+```
+GET    /api/admin/users - List all users
+PUT    /api/admin/users/[id]/role - Update user role
+GET    /api/admin/analytics - Get platform analytics
+GET    /api/admin/purchases - List all purchases
+```
+
+### 4.9 Review Routes
+```
+GET  /api/reviews/[courseId] - Get course reviews
+POST /api/reviews - Create review (purchased users only)
+PUT  /api/reviews/[id] - Update own review
+DELETE /api/reviews/[id] - Delete own review
+```
+
+---
+
+## 5. Page Structure (Next.js App Router)
+
+### 5.1 Public Pages
+```
+/ - Home page (featured courses, categories)
+/courses - Course catalog with filters
+/courses/[slug] - Course detail page
+/categories/[slug] - Courses by category
+/login - Login page
+/register - Registration page
+/forgot-password - Password reset request
+/reset-password - Password reset form
+```
+
+### 5.2 Protected Pages (Student)
+```
+/dashboard - Student dashboard
+/dashboard/my-courses - Purchased courses
+/dashboard/profile - Profile settings
+/dashboard/purchases - Purchase history
+/learn/[courseSlug] - Course learning interface
+/learn/[courseSlug]/[lessonId] - Lesson viewer
+```
+
+### 5.3 Protected Pages (Instructor/Admin)
+```
+/instructor - Instructor dashboard
+/instructor/courses - Manage courses
+/instructor/courses/new - Create new course
+/instructor/courses/[id]/edit - Edit course
+/instructor/courses/[id]/curriculum - Manage modules/lessons
+```
+
+### 5.4 Admin Pages
+```
+/admin - Admin dashboard
+/admin/users - User management
+/admin/courses - All courses management
+/admin/analytics - Platform analytics
+/admin/purchases - All purchases
+/admin/categories - Category management
+```
+
+### 5.5 Checkout Pages
+```
+/checkout/success - Payment success
+/checkout/cancel - Payment cancelled
+```
+
+---
+
+## 6. UI/UX Requirements
+
+### 6.1 Design System
+- Modern, clean design with consistent spacing
+- Dark/light mode support
+- Responsive design (mobile-first)
+- Accessible (WCAG 2.1 AA compliance)
+- Use existing shadcn/ui components from the project
+
+### 6.2 Key UI Components
+- Course card (thumbnail, title, price, rating)
+- Video player with custom controls
+- Progress bar for lessons/courses
+- Module accordion for curriculum
+- Toast notifications for actions
+- Modal dialogs for confirmations
+- Skeleton loaders for async content
+- Empty states with illustrations
+
+### 6.3 Navigation
+- Main navbar with logo, search, auth buttons
+- Mobile hamburger menu
+- Dashboard sidebar for authenticated users
+- Breadcrumbs for deep navigation
+- Footer with links and social
+
+---
+
+## 7. Security Requirements
+
+### 7.1 Authentication Security
+- Appwrite session management
+- HTTP-only cookies for session tokens
+- CSRF protection
+- Rate limiting on auth endpoints
+
+### 7.2 Content Protection
+- Signed URLs for R2 content (expire in 1 hour)
+- Purchase verification middleware
+- Server-side access control
+- No direct R2 bucket access
+
+### 7.3 Payment Security
+- Stripe handles all payment data (PCI compliant)
+- Webhook signature verification
+- Idempotent payment processing
+- No credit card data stored locally
+
+### 7.4 API Security
+- Input validation on all endpoints
+- Role-based access control middleware
+- SQL injection prevention (Appwrite handles)
+- XSS prevention with proper encoding
+
+---
+
+## 8. Performance Requirements
+
+### 8.1 Page Load
+- First Contentful Paint < 1.5s
+- Time to Interactive < 3s
+- Lighthouse score > 90
+
+### 8.2 Optimizations
+- Next.js Image optimization
+- Static generation for public pages
+- ISR for course listings
+- Client-side caching with SWR/React Query
+- Video lazy loading
+- Code splitting per route
+
+### 8.3 CDN & Caching
+- Cloudflare R2 for global content delivery
+- Static assets cached at edge
+- API response caching where appropriate
+
+---
+
+## 9. Implementation Phases
+
+### Phase 1: Foundation (Week 1-2)
+- Project setup and configuration
+- Appwrite setup and database schema
+- Authentication system (register, login, logout)
+- Basic layout and navigation
+- User profile management
+
+### Phase 2: Course Infrastructure (Week 3-4)
+- Cloudflare R2 integration
+- File upload system (videos, images, resources)
+- Course CRUD operations
+- Module and lesson management
+- Course listing and detail pages
+
+### Phase 3: Payment Integration (Week 5)
+- Stripe integration
+- Checkout flow
+- Webhook handling
+- Purchase records
+- Access control for purchased content
+
+### Phase 4: Learning Experience (Week 6-7)
+- Video player with progress tracking
+- Lesson completion tracking
+- My Courses dashboard
+- Course progress visualization
+- Resource downloads
+
+### Phase 5: Admin & Polish (Week 8)
+- Admin dashboard
+- Analytics display
+- User management
+- Reviews and ratings
+- Performance optimization
+- Testing and bug fixes
+
+---
+
+## 10. Environment Variables Required
+
+```
+# Appwrite
+NEXT_PUBLIC_APPWRITE_ENDPOINT=
+NEXT_PUBLIC_APPWRITE_PROJECT_ID=
+APPWRITE_API_KEY=
+
+# Cloudflare R2
+R2_ACCOUNT_ID=
+R2_ACCESS_KEY_ID=
+R2_SECRET_ACCESS_KEY=
+R2_BUCKET_NAME=
+R2_PUBLIC_URL=
+
+# Stripe
+STRIPE_SECRET_KEY=
+STRIPE_PUBLISHABLE_KEY=
+STRIPE_WEBHOOK_SECRET=
+
+# App
+NEXT_PUBLIC_APP_URL=
+```
+
+---
+
+## 11. Success Metrics
+
+- User registration conversion rate
+- Course purchase conversion rate
+- Course completion rate
+- Average session duration
+- Revenue per user
+- Platform uptime (99.9% target)
+
+---
+
+## 12. Future Enhancements (Post-MVP)
+
+- Discount codes and coupons
+- Course bundles
+- Subscription model
+- Certificates of completion
+- Discussion forums per course
+- Live sessions integration
+- Mobile app
+- Affiliate program
+- Multi-language support
+- Email marketing integration

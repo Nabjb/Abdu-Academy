@@ -1,0 +1,271 @@
+-- ============================================================================
+-- ABDU ACADEMY - Appwrite Collections Schema Reference
+-- ============================================================================
+-- 
+-- This file provides a SQL-like reference for the Appwrite collections.
+-- Note: Appwrite is a NoSQL database and doesn't use SQL.
+-- Use this as a reference, but use the setup script to actually create collections.
+--
+-- To create collections, run: npm run setup-appwrite
+-- ============================================================================
+
+-- ============================================================================
+-- COLLECTION: users
+-- ============================================================================
+-- Purpose: Store user profile information
+-- 
+-- CREATE COLLECTION users (
+--   userId VARCHAR(255) PRIMARY KEY NOT NULL,
+--   name VARCHAR(255) NOT NULL,
+--   avatar VARCHAR(500),
+--   role VARCHAR(20) NOT NULL CHECK (role IN ('student', 'instructor', 'admin')),
+--   createdAt DATETIME NOT NULL,
+--   updatedAt DATETIME NOT NULL
+-- );
+--
+-- INDEXES:
+--   - userId (KEY, unique)
+--
+-- PERMISSIONS:
+--   - Read: Users (own document)
+--   - Create: Users
+--   - Update: Users (own document)
+--   - Delete: Users (own document)
+
+-- ============================================================================
+-- COLLECTION: courses
+-- ============================================================================
+-- Purpose: Store course information
+--
+-- CREATE COLLECTION courses (
+--   courseId VARCHAR(255) PRIMARY KEY NOT NULL,
+--   title VARCHAR(500) NOT NULL,
+--   slug VARCHAR(500) NOT NULL UNIQUE,
+--   description TEXT NOT NULL,
+--   shortDescription VARCHAR(500) NOT NULL,
+--   price DECIMAL(10,2) NOT NULL,
+--   currency VARCHAR(10) NOT NULL DEFAULT 'USD',
+--   thumbnail VARCHAR(500),
+--   category VARCHAR(100) NOT NULL,
+--   level VARCHAR(20) NOT NULL CHECK (level IN ('beginner', 'intermediate', 'advanced')),
+--   instructorId VARCHAR(255) NOT NULL,
+--   status VARCHAR(20) NOT NULL CHECK (status IN ('draft', 'published', 'archived')),
+--   totalDuration INT NOT NULL,
+--   totalLessons INT NOT NULL,
+--   createdAt DATETIME NOT NULL,
+--   updatedAt DATETIME NOT NULL,
+--   publishedAt DATETIME
+-- );
+--
+-- INDEXES:
+--   - title (FULLTEXT)
+--   - slug (UNIQUE)
+--   - category (KEY)
+--   - instructorId (KEY)
+--   - status (KEY)
+--
+-- PERMISSIONS:
+--   - Read: Any (for published courses), Users (for own courses)
+--   - Create: Users (role: instructor or admin)
+--   - Update: Users (role: instructor or admin, own courses)
+--   - Delete: Users (role: admin)
+
+-- ============================================================================
+-- COLLECTION: modules
+-- ============================================================================
+-- Purpose: Store course modules/chapters
+--
+-- CREATE COLLECTION modules (
+--   moduleId VARCHAR(255) PRIMARY KEY NOT NULL,
+--   courseId VARCHAR(255) NOT NULL,
+--   title VARCHAR(500) NOT NULL,
+--   description VARCHAR(2000),
+--   order INT NOT NULL,
+--   createdAt DATETIME NOT NULL,
+--   FOREIGN KEY (courseId) REFERENCES courses(courseId)
+-- );
+--
+-- INDEXES:
+--   - courseId (KEY)
+--
+-- PERMISSIONS:
+--   - Read: Any (if course is published)
+--   - Create: Users (role: instructor or admin)
+--   - Update: Users (role: instructor or admin)
+--   - Delete: Users (role: instructor or admin)
+
+-- ============================================================================
+-- COLLECTION: lessons
+-- ============================================================================
+-- Purpose: Store individual lessons within modules
+--
+-- CREATE COLLECTION lessons (
+--   lessonId VARCHAR(255) PRIMARY KEY NOT NULL,
+--   moduleId VARCHAR(255) NOT NULL,
+--   courseId VARCHAR(255) NOT NULL,
+--   title VARCHAR(500) NOT NULL,
+--   description VARCHAR(5000),
+--   videoUrl VARCHAR(500),
+--   duration INT NOT NULL,
+--   order INT NOT NULL,
+--   isFreePreview BOOLEAN NOT NULL DEFAULT FALSE,
+--   resources TEXT, -- JSON string array
+--   createdAt DATETIME NOT NULL,
+--   FOREIGN KEY (moduleId) REFERENCES modules(moduleId),
+--   FOREIGN KEY (courseId) REFERENCES courses(courseId)
+-- );
+--
+-- INDEXES:
+--   - moduleId (KEY)
+--   - courseId (KEY)
+--
+-- PERMISSIONS:
+--   - Read: Any (if isFreePreview or course purchased)
+--   - Create: Users (role: instructor or admin)
+--   - Update: Users (role: instructor or admin)
+--   - Delete: Users (role: instructor or admin)
+
+-- ============================================================================
+-- COLLECTION: purchases
+-- ============================================================================
+-- Purpose: Store course purchase records
+--
+-- CREATE COLLECTION purchases (
+--   purchaseId VARCHAR(255) PRIMARY KEY NOT NULL,
+--   userId VARCHAR(255) NOT NULL,
+--   courseId VARCHAR(255) NOT NULL,
+--   stripePaymentId VARCHAR(255) NOT NULL,
+--   stripeSessionId VARCHAR(255) NOT NULL,
+--   amount DECIMAL(10,2) NOT NULL,
+--   currency VARCHAR(10) NOT NULL,
+--   status VARCHAR(20) NOT NULL CHECK (status IN ('pending', 'completed', 'refunded')),
+--   purchasedAt DATETIME NOT NULL,
+--   FOREIGN KEY (userId) REFERENCES users(userId),
+--   FOREIGN KEY (courseId) REFERENCES courses(courseId),
+--   UNIQUE (userId, courseId)
+-- );
+--
+-- INDEXES:
+--   - userId (KEY)
+--   - courseId (KEY)
+--   - userId_courseId (COMPOSITE: userId, courseId)
+--
+-- PERMISSIONS:
+--   - Read: Users (own purchases)
+--   - Create: Users
+--   - Update: Users (role: admin)
+--   - Delete: Users (role: admin)
+
+-- ============================================================================
+-- COLLECTION: progress
+-- ============================================================================
+-- Purpose: Track user learning progress
+--
+-- CREATE COLLECTION progress (
+--   progressId VARCHAR(255) PRIMARY KEY NOT NULL,
+--   userId VARCHAR(255) NOT NULL,
+--   courseId VARCHAR(255) NOT NULL,
+--   lessonId VARCHAR(255) NOT NULL,
+--   completed BOOLEAN NOT NULL DEFAULT FALSE,
+--   watchedSeconds INT NOT NULL DEFAULT 0,
+--   lastWatchedAt DATETIME NOT NULL,
+--   FOREIGN KEY (userId) REFERENCES users(userId),
+--   FOREIGN KEY (courseId) REFERENCES courses(courseId),
+--   FOREIGN KEY (lessonId) REFERENCES lessons(lessonId),
+--   UNIQUE (userId, courseId, lessonId)
+-- );
+--
+-- INDEXES:
+--   - userId (KEY)
+--   - courseId (KEY)
+--   - lessonId (KEY)
+--   - userId_courseId (COMPOSITE: userId, courseId)
+--
+-- PERMISSIONS:
+--   - Read: Users (own progress)
+--   - Create: Users
+--   - Update: Users (own progress)
+--   - Delete: Users (own progress)
+
+-- ============================================================================
+-- COLLECTION: reviews
+-- ============================================================================
+-- Purpose: Store course reviews and ratings
+--
+-- CREATE COLLECTION reviews (
+--   reviewId VARCHAR(255) PRIMARY KEY NOT NULL,
+--   userId VARCHAR(255) NOT NULL,
+--   courseId VARCHAR(255) NOT NULL,
+--   rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+--   comment VARCHAR(2000),
+--   createdAt DATETIME NOT NULL,
+--   FOREIGN KEY (userId) REFERENCES users(userId),
+--   FOREIGN KEY (courseId) REFERENCES courses(courseId),
+--   UNIQUE (userId, courseId)
+-- );
+--
+-- INDEXES:
+--   - userId (KEY)
+--   - courseId (KEY)
+--
+-- PERMISSIONS:
+--   - Read: Any
+--   - Create: Users (must have purchased course)
+--   - Update: Users (own review)
+--   - Delete: Users (own review)
+
+-- ============================================================================
+-- COLLECTION: categories
+-- ============================================================================
+-- Purpose: Store course categories
+--
+-- CREATE COLLECTION categories (
+--   categoryId VARCHAR(255) PRIMARY KEY NOT NULL,
+--   name VARCHAR(100) NOT NULL,
+--   slug VARCHAR(100) NOT NULL UNIQUE,
+--   description VARCHAR(1000),
+--   icon VARCHAR(100),
+--   order INT NOT NULL
+-- );
+--
+-- INDEXES:
+--   - slug (UNIQUE)
+--
+-- PERMISSIONS:
+--   - Read: Any
+--   - Create: Users (role: admin)
+--   - Update: Users (role: admin)
+--   - Delete: Users (role: admin)
+
+-- ============================================================================
+-- RELATIONSHIPS SUMMARY
+-- ============================================================================
+--
+-- users (1) ──< purchases (N)
+-- courses (1) ──< purchases (N)
+-- courses (1) ──< modules (N)
+-- courses (1) ──< lessons (N)
+-- courses (1) ──< reviews (N)
+-- modules (1) ──< lessons (N)
+-- users (1) ──< progress (N)
+-- courses (1) ──< progress (N)
+-- lessons (1) ──< progress (N)
+--
+-- ============================================================================
+-- NOTES
+-- ============================================================================
+--
+-- 1. Appwrite doesn't support foreign keys, but relationships are maintained
+--    through application logic using the IDs.
+--
+-- 2. All collections use Appwrite's built-in $id field as the primary key.
+--    The custom IDs (userId, courseId, etc.) are stored as string attributes
+--    and indexed for querying.
+--
+-- 3. Permissions in Appwrite are more flexible than SQL - they can be based
+--    on user roles, document ownership, or custom logic.
+--
+-- 4. To actually create these collections, use the setup script:
+--    npm run setup-appwrite
+--
+-- ============================================================================
